@@ -1,0 +1,178 @@
+{
+  "905178483888652388": {
+    "message_id": 905178483888652388,
+    "channel_id": 904682980386164776,
+    "Lot": "Rien",
+    "Fin": "2 Novembre 2021 a 20h36",
+    "Condition": "Aucun",
+    "Role": "Aucune"
+  },
+  "905178776747520052": {
+    "message_id": 905178776747520052,
+    "channel_id": 904682980386164776,
+    "Lot": "Rien",
+    "Fin": "2 Novembre 2021 a 20h37",
+    "Condition": "Aucune",
+    "Role": "Aucune"
+  },
+  "906234992965853226": {
+    "message_id": 906234992965853226,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "906235007255867513": {
+    "message_id": 906235007255867513,
+    "channel_id": 904682980386164776,
+    "Lot": "Rien",
+    "Fin": "5 Novembre 2021 a 18h34",
+    "Condition": "Aucune",
+    "Role": "Aucune"
+  },
+  "869154474034331679": {
+    "message_id": 869154474034331679,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "906251868064333874": {
+    "message_id": 906251868064333874,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "869146401374892113": {
+    "message_id": 869146401374892113,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "894592648151728248": {
+    "message_id": 894592648151728248,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "908400098457829376": {
+    "message_id": 908400098457829376,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "908332756478619658": {
+    "message_id": 908332756478619658,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "908406463100227595": {
+    "message_id": 908406463100227595,
+    "channel_id": 908398386590408744,
+    "Lot": "200k",
+    "Fin": "11 Novembre 2021 a 18h23",
+    "Condition": "rien",
+    "Role": "Aucune"
+  },
+  "913706059330371595": {
+    "message_id": 913706059330371595,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "913676886217998356": {
+    "message_id": 913676886217998356,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "913880124011728966": {
+    "message_id": 913880124011728966,
+    "channel_id": 769272265732259901,
+    "Lot": "RIen",
+    "Fin": "26 Novembre 2021 a 20h53",
+    "Condition": "Aucune",
+    "Role": "Aucune"
+  },
+  "913880257294123078": {
+    "message_id": 913880257294123078,
+    "channel_id": 769272265732259901,
+    "Lot": "Rien",
+    "Fin": "26 Novembre 2021 a 20h53",
+    "Condition": "1 invite",
+    "Role": 905394465680793642
+  },
+  "913880407815114834": {
+    "message_id": 913880407815114834,
+    "channel_id": 769272265732259901,
+    "Lot": "RIen",
+    "Fin": "26 Novembre 2021 a 20h54",
+    "Condition": "1 invite",
+    "Role": 905394465680793642
+  },
+  "912039724175216670": {
+    "message_id": 912039724175216670,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "836676108416974880": {
+    "message_id": 836676108416974880,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "913545515029917736": {
+    "message_id": 913545515029917736,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "914089022920482836": {
+    "message_id": 914089022920482836,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "914081892557524992": {
+    "message_id": 914081892557524992,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  },
+  "914210260569452564": {
+    "message_id": 914210260569452564,
+    "channel_id": "Channel",
+    "Lot": "Lot",
+    "Fin": "Fin",
+    "Condition": "Condition",
+    "Role": "Role"
+  }
+}
