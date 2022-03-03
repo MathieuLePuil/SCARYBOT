@@ -105,6 +105,9 @@ class Help(commands.Cog):
             em3.add_field(name="`/rappel`",
                           value="<:fad:835500807210270770> Mettre un rappel dans un certain temps dans un channel spécifique.",
                           inline=False)
+            em3.add_field(name="`!gift <lot>`",
+                          value="<:fad:835500807210270770> Offre un cadeau au premier joueur qui clique sur le bouton.",
+                          inline=False)
             em3.set_thumbnail(url="https://cdn.discordapp.com/emojis/762020637283713055.png?v=1")
             em3.set_image(url="https://cdn.discordapp.com/emojis/813748552915222529.png?v=1")
             em3.set_footer(text="ScaryBot - Help",

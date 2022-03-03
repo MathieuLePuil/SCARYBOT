@@ -126,9 +126,6 @@ class Giveaway(commands.Cog):
                 await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            digits = "0123456789"
-            rolecond_id = ""
-
             if role.content != "non":
                 digits = "0123456789"
                 rolecond_id = ""
@@ -146,6 +143,7 @@ class Giveaway(commands.Cog):
 
             time = self.convert(duree.content)
             fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
+            month = "Aucun"
 
             if fin.month == 1:
                 month = "Janvier"
@@ -178,7 +176,7 @@ class Giveaway(commands.Cog):
                 minute = fin.minute
 
             gchannel = self.bot.get_channel(channelg_id)
-            rolecond = guild.get_role(rolecond_id)
+            guild.get_role(rolecond_id)
 
             embed = discord.Embed(title=f"**{lot.content}**",
                                   description=f"> *Host par:* **{interaction.user.mention}** \n > *Condition:* {conditions} \n \n Coche la réaction 🎉 pour participer !",
@@ -202,7 +200,7 @@ class Giveaway(commands.Cog):
                 print(f"Il y a une erreur!")
 
             with open("/home/mmi21b12/DISCORD/SCARYBOT/giveaway.json", "w") as f:
-                giveawayinfo = json.dump(giveawayinfo, f, indent=2)
+                json.dump(giveawayinfo, f, indent=2)
 
             await asyncio.sleep(time)
 
@@ -285,6 +283,7 @@ class Giveaway(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def reroll(self, ctx, channel: discord.TextChannel, id_: int):
+        global new_msg
         try:
             new_msg = await channel.fetch_message(id_)
         except:
