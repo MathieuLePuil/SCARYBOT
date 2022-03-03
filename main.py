@@ -1,40 +1,38 @@
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions, MissingPermissions
-import asyncio
-from discord_slash import SlashCommand, ButtonStyle
-import datetime
-import json
-import random
-from discord import Permissions
-from colorama import Fore, Style
+from discord.ext import commands
+from discord_slash import SlashCommand
 from discord_slash.utils.manage_components import *
 from discord_components import *
-import requests
+
 intents = discord.Intents.default()
 intents.typing = True
 intents.presences = True
 intents.members = True
 
-#py Desktop\BOT_FINAL\main.py
+# py Desktop\BOT_FINAL\main.py
 
-bot = commands.Bot(command_prefix = "!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 bot.remove_command("help")
-slash = SlashCommand(bot, sync_commands = True)
+slash = SlashCommand(bot, sync_commands=True)
 
-extensions = ['on_command_error', 'on_member_join', 'latence', 'cblacklist', 'eblacklist', 'gblacklist', 'pat_avis', 'rupture', 'resultats', 'recompenses', 'conditionspart', 'grades', 'moderateurs', 'msgsugg', 'partenariat', 'qdj', 'vendeurs', 'logs', 'absence', 'close', 'help', 'simple', 'suggestion', 'autorole', 'commande', 'enchere', 'giveaway', 'support', 'role', 'reseau', 'effectif_vendeur', 'effectif_grades', 'giveaway_prog', 'rappel', 'resend_message']
+extensions = ['on_command_error', 'on_member_join', 'latence', 'cblacklist', 'eblacklist', 'gblacklist', 'pat_avis',
+              'rupture', 'resultats', 'recompenses', 'conditionspart', 'grades', 'moderateurs', 'msgsugg',
+              'partenariat', 'qdj', 'vendeurs', 'logs', 'absence', 'close', 'help', 'simple', 'suggestion', 'autorole',
+              'commande', 'enchere', 'giveaway', 'support', 'role', 'reseau', 'effectif_vendeur', 'effectif_grades',
+              'giveaway_prog', 'rappel', 'resend_message']
+
 
 @bot.event
 async def on_ready():
-
     channel = bot.get_channel(828549652621164574)
 
-    await bot.change_presence(status = discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing, name="Comment ça marche? | !help"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing,
+                                                                                      name="Comment ça marche? | !help"))
     print("Scarybot est PRET!")
     await channel.send("**`Scarybot`** vient de redémarrer!")
-    #msg = await channel.send("<@337971595928666113>")
-    #await msg.delete()
+    # msg = await channel.send("<@337971595928666113>")
+    # await msg.delete()
     DiscordComponents(bot)
+
 
 @bot.command()
 async def load(ctx, extension):
@@ -44,6 +42,7 @@ async def load(ctx, extension):
     except Exception as error:
         await ctx.send('**{}** cannot be loaded. [{}]'.format(extension, error))
 
+
 @bot.command()
 async def unload(ctx, extension):
     try:
@@ -52,12 +51,14 @@ async def unload(ctx, extension):
     except Exception as error:
         await ctx.send('**{}** cannot be unloaded. [{}]'.format(extension, error))
 
+
 if __name__ == '__main__':
     for extension in extensions:
         try:
             bot.load_extension(extension)
         except Exception as error:
             print('**{}** cannot be loaded. [{}]'.format(extension, error))
+
 
 @bot.command()
 async def reload(ctx, extension):

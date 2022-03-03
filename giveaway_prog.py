@@ -1,26 +1,21 @@
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions, MissingPermissions
+from discord.ext import commands
 import asyncio
-from discord_slash import SlashCommand, ButtonStyle
 import datetime
 import json
 import random
-from discord import Permissions
-from colorama import Fore, Style
 from discord_slash.utils.manage_components import *
 from discord_components import *
+
 
 class Giveaway_prog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     def convert(self, time):
 
-        pos = ["s","m","h","d"]
+        pos = ["s", "m", "h", "d"]
 
-        time_dict = {"s" : 1, "m" : 60, "h" : 3600, "d": 3600*24}
+        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
 
         unit = time[-1]
 
@@ -32,10 +27,10 @@ class Giveaway_prog(commands.Cog):
         except:
             return -2
 
-        return val * time_dict[unit]  
+        return val * time_dict[unit]
 
     @commands.command()
-    @commands.has_permissions(administrator = True)
+    @commands.has_permissions(administrator=True)
     async def proggiveaway(self, ctx):
         embed = discord.Embed(title="**Lancer un Giveaway programmé**",
                               description="Pour lancer un giveaway programmé, veuillez cliquer sur le bouton sous ce message.",
@@ -49,7 +44,6 @@ class Giveaway_prog(commands.Cog):
                        components=[Button(style=ButtonStyle.green, label="🎉 Giveaway", custom_id="giveaway_prog")])
 
         await ctx.message.delete()
-
 
     @commands.Cog.listener()
     async def on_button_click(self, interaction: Interaction):
@@ -65,18 +59,22 @@ class Giveaway_prog(commands.Cog):
             em3 = discord.Embed(description="Quel est le lot du Giveaway?",
                                 color=0xFFA500)
             em4 = discord.Embed(description="Quelles sont les conditions du Giveaway?", color=0xFFA500)
-            em5 = discord.Embed(description="Un rôle est-il nécessaire pour participer au Giveaway? `(Si oui, mentionnez, sinon, écrivez \"non\")`", color=0xFFA500)
-            em6 = discord.Embed(description="Dans combien de temps souhaitez-vous lancer le giveaway ? (s | m | d | h)", color=0xFFA500)
+            em5 = discord.Embed(
+                description="Un rôle est-il nécessaire pour participer au Giveaway? `(Si oui, mentionnez, sinon, écrivez \"non\")`",
+                color=0xFFA500)
+            em6 = discord.Embed(description="Dans combien de temps souhaitez-vous lancer le giveaway ? (s | m | d | h)",
+                                color=0xFFA500)
             em7 = discord.Embed(description="Quel est le message de pub ? (si aucun, écrire `non`)", color=0xFFA500)
             em8 = discord.Embed(description="Quel est le message de mention ? (si aucun, écrire `non`)", color=0xFFA500)
             await interaction.channel.send(embed=em1)
 
             try:
                 channelg = await self.bot.wait_for("message", timeout=60,
-                                          check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                   check=lambda
+                                                       msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=1, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             digits = "0123456789"
@@ -88,75 +86,81 @@ class Giveaway_prog(commands.Cog):
 
             channelg_id = int(channelg_id)
 
-
             message = await interaction.channel.send(embed=em2)
 
             try:
                 duree = await self.bot.wait_for("message", timeout=60,
-                                              check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                check=lambda
+                                                    msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=3, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em3)
 
             try:
                 lot = await self.bot.wait_for("message", timeout=60,
-                                          check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                              check=lambda
+                                                  msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=5, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em4)
 
             try:
                 condition = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                    check=lambda
+                                                        msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=7, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em5)
 
             try:
                 role = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                               check=lambda
+                                                   msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=9, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em6)
 
             try:
                 start = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                check=lambda
+                                                    msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=11, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em7)
 
             try:
                 pub = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                              check=lambda
+                                                  msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=13, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em8)
 
             try:
                 mention = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                  check=lambda
+                                                      msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=15, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             digits = "0123456789"
@@ -179,7 +183,7 @@ class Giveaway_prog(commands.Cog):
 
             time = self.convert(duree.content)
             start_time = self.convert(start.content)
-            fin = datetime.datetime.now() + datetime.timedelta(seconds = time)
+            fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
 
             if fin.month == 1:
                 month = "Janvier"
@@ -214,22 +218,21 @@ class Giveaway_prog(commands.Cog):
             gchannel = self.bot.get_channel(channelg_id)
             rolecond = guild.get_role(rolecond_id)
 
-
-
-            embed = discord.Embed(title = f"**{lot.content}**", description = f"> *Host par:* **{interaction.user.mention}** \n > *Condition:* {conditions} \n \n Coche la réaction 🎉 pour participer!", color = 0xFD3F92)
-            embed.set_footer(text = f"Fin le: {fin.day} {month} {fin.year} à {fin.hour}h{minute}")
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/emojis/843936828016689152.png?v=1")
+            embed = discord.Embed(title=f"**{lot.content}**",
+                                  description=f"> *Host par:* **{interaction.user.mention}** \n > *Condition:* {conditions} \n \n Coche la réaction 🎉 pour participer!",
+                                  color=0xFD3F92)
+            embed.set_footer(text=f"Fin le: {fin.day} {month} {fin.year} à {fin.hour}h{minute}")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/843936828016689152.png?v=1")
 
             await interaction.channel.send(f"Le giveaway de {lot.content} sera lancé dans {start.content} !")
 
             await asyncio.sleep(start_time)
 
-
             if pub.content != "non":
                 await gchannel.send(pub.content)
             else:
                 pass
-            message = await gchannel.send("🎉 **GIVEAWAY** 🎉", embed = embed)
+            message = await gchannel.send("🎉 **GIVEAWAY** 🎉", embed=embed)
             await message.add_reaction("🎉")
 
             if mention.content != "non":
@@ -249,7 +252,7 @@ class Giveaway_prog(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("giveaway.json", "w") as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/giveaway.json", "w") as f:
                 giveawayinfo = json.dump(giveawayinfo, f, indent=2)
 
             await asyncio.sleep(time)
@@ -261,10 +264,8 @@ class Giveaway_prog(commands.Cog):
 
             winner = random.choice(users)
 
-            await gchannel.send(f"🎉 **Bien joué** à toi {winner.mention}, tu remportes **{lot.content}**! Je t'invite à te rendre dans le <#765633542658195456> pour récuperer ton lot. 🎉")
-
-
-
+            await gchannel.send(
+                f"🎉 **Bien joué** à toi {winner.mention}, tu remportes **{lot.content}**! Je t'invite à te rendre dans le <#765633542658195456> pour récuperer ton lot. 🎉")
 
     async def when_giveaway(self, message):
         giveawayinfo = await self.get_giveaway_data()
@@ -280,16 +281,16 @@ class Giveaway_prog(commands.Cog):
             giveawayinfo[str(message.id)]["Fin"] = "Fin"
             giveawayinfo[str(message.id)]["Condition"] = "Condition"
             giveawayinfo[str(message.id)]["Role"] = "Role"
-        with open("giveaway.json", "w") as f:
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/giveaway.json", "w") as f:
             giveawayinfo = json.dump(giveawayinfo, f, indent=2)
         return True
 
-
     async def get_giveaway_data(self):
-        with open("giveaway.json", "r") as f:
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/giveaway.json", "r") as f:
             giveawayinfo = json.load(f)
 
         return giveawayinfo
+
 
 def setup(bot):
     bot.add_cog(Giveaway_prog(bot))

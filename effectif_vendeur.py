@@ -1,14 +1,15 @@
 import discord
 from discord.ext import commands
-from discord_slash import *
+from discord_slash import cog_ext
 import datetime
+
 
 class EffeVendeur(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name = "effectif_vendeur", description = "Affiche la liste des vendeurs du serveur.")
-    @commands.has_permissions(manage_roles = True)
+    @cog_ext.cog_slash(name="effectif_vendeur", description="Affiche la liste des vendeurs du serveur.")
+    @commands.has_permissions(manage_roles=True)
     async def effectif_vendeur(self, ctx):
         guild = ctx.guild
 
@@ -39,10 +40,14 @@ class EffeVendeur(commands.Cog):
             for user in role['list_users']:
                 list_users.append(f"• {user.mention}")
             if list_users == []: list_users = ["Aucun"]
-            if role['count'] > 1 or role['count'] == 0: prefix, suffix = "Nos", "s"
-            else: prefix, suffix = "Notre", ""
-            if "+" not in role['name']: role['name'] = f"{prefix} {role['name']}{suffix}"
-            else: role['name'] = f"{prefix} {role['name'].replace('#', suffix).replace('+', '')}"
+            if role['count'] > 1 or role['count'] == 0:
+                prefix, suffix = "Nos", "s"
+            else:
+                prefix, suffix = "Notre", ""
+            if "+" not in role['name']:
+                role['name'] = f"{prefix} {role['name']}{suffix}"
+            else:
+                role['name'] = f"{prefix} {role['name'].replace('#', suffix).replace('+', '')}"
             embed.add_field(name=f"{role['name']} ({role['count']})",
                             value="\n".join(list_users),
                             inline=False)

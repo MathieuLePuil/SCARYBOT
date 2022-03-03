@@ -1,15 +1,9 @@
-import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions, MissingPermissions
+from discord.ext import commands
 import asyncio
-from discord_slash import SlashCommand, ButtonStyle
 import datetime
-import json
-import random
-from discord import Permissions
-from colorama import Fore, Style
 from discord_slash.utils.manage_components import *
 from discord_components import *
+
 
 class Enchere(commands.Cog):
     def __init__(self, bot):
@@ -17,9 +11,9 @@ class Enchere(commands.Cog):
 
     def convert(self, time):
 
-        pos = ["s","m","h","d"]
+        pos = ["s", "m", "h", "d"]
 
-        time_dict = {"s" : 1, "m" : 60, "h" : 3600, "d": 3600*24}
+        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
 
         unit = time[-1]
 
@@ -31,10 +25,10 @@ class Enchere(commands.Cog):
         except:
             return -2
 
-        return val * time_dict[unit]  
+        return val * time_dict[unit]
 
     @commands.command()
-    @commands.has_permissions(administrator = True)
+    @commands.has_permissions(administrator=True)
     async def enchere(self, ctx):
         embed = discord.Embed(title="**Lancer une enchère**",
                               description="Pour lancer une enchère, veuillez cliquer sur le bouton sous ce message.",
@@ -47,7 +41,6 @@ class Enchere(commands.Cog):
         await ctx.send(embed=embed,
                        components=[Button(style=ButtonStyle.green, label="⚖️ Enchère", custom_id="enchere")])
         await ctx.message.delete()
-
 
     @commands.Cog.listener()
     async def on_button_click(self, interaction: Interaction):
@@ -63,17 +56,20 @@ class Enchere(commands.Cog):
             em3 = discord.Embed(description="Quel est le prix de départ de l'enchère? (sans le $)",
                                 color=0xFFA500)
             em4 = discord.Embed(description="Quelle est la durée de l'enchère? `(s|m|h|d)`", color=0xFFA500)
-            em5 = discord.Embed(description="Quel est le pas de l'enchère? `(1 pour 1.000$ en 1.000$, 2 pour 2.000$ en 2.000$...)`", color=0xFFA500)
+            em5 = discord.Embed(
+                description="Quel est le pas de l'enchère? `(1 pour 1.000$ en 1.000$, 2 pour 2.000$ en 2.000$...)`",
+                color=0xFFA500)
             em6 = discord.Embed(description="Quel est l'id du vendeur'?", color=0xFFA500)
 
             await interaction.channel.send(embed=em1)
 
             try:
                 channele = await self.bot.wait_for("message", timeout=60,
-                                          check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                   check=lambda
+                                                       msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=1, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             digits = "0123456789"
@@ -85,61 +81,65 @@ class Enchere(commands.Cog):
 
             channele_id = int(channele_id)
 
-
             message = await interaction.channel.send(embed=em2)
 
             try:
                 item = await self.bot.wait_for("message", timeout=60,
-                                              check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                               check=lambda
+                                                   msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=3, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em3)
 
             try:
                 prix = await self.bot.wait_for("message", timeout=60,
-                                          check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                               check=lambda
+                                                   msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=5, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em4)
 
             try:
                 duree = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                check=lambda
+                                                    msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=7, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em5)
 
             try:
                 pas = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                              check=lambda
+                                                  msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=9, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             message = await interaction.channel.send(embed=em6)
 
             try:
                 vendeurid = await self.bot.wait_for("message", timeout=60,
-                                            check=lambda msg: interaction.author == msg.author and channel == msg.channel)
+                                                    check=lambda
+                                                        msg: interaction.author == msg.author and channel == msg.channel)
             except:
                 await interaction.channel.purge(limit=11, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after = 10)
+                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             await interaction.channel.purge(limit=12, check=lambda msg: not msg.pinned)
 
             time = self.convert(duree.content)
-            fin = datetime.datetime.now() + datetime.timedelta(seconds = time)
+            fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
 
             if fin.month == 1:
                 month = "Janvier"
@@ -173,19 +173,20 @@ class Enchere(commands.Cog):
 
             echannel = self.bot.get_channel(channele_id)
 
+            embed = discord.Embed(title="⚖️ ► Nouvelle enchère",
+                                  description=f"**Enchère de :** \n <:fad:835500807210270770> <@{vendeurid.content}> \n \n **Enchère :** \n > 📦 *Item en vente:* ***{item.content}*** \n > 💰 *Prix de départ:* ***{prix.content}$*** \n > ⏱️ *Date de fin:* ***{fin.day} {month} {fin.year} à {fin.hour}h{minute}***",
+                                  color=0xFFA500)
+            embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/758324312829591582.png?v=1")
+            embed.set_footer(
+                text=f"⇾ Veuillez enchérir de {pas.content}.000$ en {pas.content}.000$. \n ⇾ Il est interdit de discuter ici sous peine de sanction.")
 
-            embed = discord.Embed(title = "⚖️ ► Nouvelle enchère", description = f"**Enchère de :** \n <:fad:835500807210270770> <@{vendeurid.content}> \n \n **Enchère :** \n > 📦 *Item en vente:* ***{item.content}*** \n > 💰 *Prix de départ:* ***{prix.content}$*** \n > ⏱️ *Date de fin:* ***{fin.day} {month} {fin.year} à {fin.hour}h{minute}***",
-                color=0xFFA500)
-            embed.set_thumbnail(url = "https://cdn.discordapp.com/emojis/758324312829591582.png?v=1")
-            embed.set_footer(text = f"⇾ Veuillez enchérir de {pas.content}.000$ en {pas.content}.000$. \n ⇾ Il est interdit de discuter ici sous peine de sanction.")
-
-            await echannel.send(embed = embed)
-            await echannel.send("<@&714866835589431298>", delete_after = 1)
+            await echannel.send(embed=embed)
+            await echannel.send("<@&714866835589431298>", delete_after=1)
 
             await asyncio.sleep(time)
 
             await echannel.send("***L'ENCHÈRE EST TERMINÉE !***")
-            await echannel.send("<@&753490443819417741>", delete_after = 1)
+            await echannel.send("<@&753490443819417741>", delete_after=1)
 
 
 def setup(bot):

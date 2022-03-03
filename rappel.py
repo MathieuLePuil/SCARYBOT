@@ -1,16 +1,9 @@
 import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import has_permissions, MissingPermissions
+from discord.ext import commands
 import asyncio
-from discord_slash import SlashCommand, ButtonStyle
 import datetime
-import json
-import random
-from discord import Permissions
-from colorama import Fore, Style
-from discord_slash.utils.manage_components import *
-from discord_components import *
-from discord_slash import *
+from discord_slash import cog_ext
+
 
 class Rappel(commands.Cog):
     def __init__(self, bot):
@@ -18,9 +11,9 @@ class Rappel(commands.Cog):
 
     def convert(self, time):
 
-        pos = ["s","m","h","d"]
+        pos = ["s", "m", "h", "d"]
 
-        time_dict = {"s" : 1, "m" : 60, "h" : 3600, "d": 3600*24}
+        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
 
         unit = time[-1]
 
@@ -34,14 +27,15 @@ class Rappel(commands.Cog):
 
         return val * time_dict[unit]
 
-    @cog_ext.cog_slash(name = "rappel", description = "Met un rappel dans un certain temps dans un channel spécifique.")
-    @commands.has_permissions(kick_members = True)
-    async def rappel(self, ctx, channel : discord.TextChannel, duree, reason = "Aucune raison n'a été renseignée"):
+    @cog_ext.cog_slash(name="rappel", description="Met un rappel dans un certain temps dans un channel spécifique.")
+    @commands.has_permissions(kick_members=True)
+    async def rappel(self, ctx, channel: discord.TextChannel, duree, reason="Aucune raison n'a été renseignée"):
         time = self.convert(duree)
-        fin = datetime.datetime.now() + datetime.timedelta(seconds = time)
+        fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
+        month = "Aucun"
 
         if fin.month == 1:
-            month == "Janvier"
+            month = "Janvier"
         elif fin.month == 2:
             month = "Février"
         elif fin.month == 3:
@@ -70,20 +64,23 @@ class Rappel(commands.Cog):
         else:
             minute = fin.minute
 
-        em1 = discord.Embed(description = f"Vous avez mis un rappel pour le **{fin.day} {month} {fin.year} à {fin.hour}h{minute}** dans {channel.mention}.", color = 0xFFA500)
+        em1 = discord.Embed(
+            description=f"Vous avez mis un rappel pour le **{fin.day} {month} {fin.year} à {fin.hour}h{minute}** dans {channel.mention}.",
+            color=0xFFA500)
         em1.set_footer(text="ScaryBot",
-                             icon_url="https://cdn.discordapp.com/emojis/834364622555054080.png?size=128")
+                       icon_url="https://cdn.discordapp.com/emojis/834364622555054080.png?size=128")
 
-        await ctx.send(embed = em1)
+        await ctx.send(embed=em1)
 
         await asyncio.sleep(time)
 
-        em2 = discord.Embed(description = f"**⏰ ► RAPPEL** \n \n > **Raison :** *{reason}* \n > **Rappel de** {ctx.author.mention}", color = 0xFFA500)
+        em2 = discord.Embed(
+            description=f"**⏰ ► RAPPEL** \n \n > **Raison :** *{reason}* \n > **Rappel de** {ctx.author.mention}",
+            color=0xFFA500)
         em2.set_footer(text="ScaryBot", icon_url="https://cdn.discordapp.com/emojis/834364622555054080.png?size=128")
 
-        await channel.send(embed = em2)
-        await channel.send(ctx.author.mention, delete_after = 1)
-        
+        await channel.send(embed=em2)
+        await channel.send(ctx.author.mention, delete_after=1)
 
 
 def setup(bot):

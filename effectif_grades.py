@@ -1,13 +1,14 @@
 import discord
 from discord.ext import commands
-from discord_slash import *
+from discord_slash import cog_ext
 import datetime
+
 
 class EffeGrade(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name = "effectif_grade", description = "Affiche la liste des gradés du serveur.")
+    @cog_ext.cog_slash(name="effectif_grade", description="Affiche la liste des gradés du serveur.")
     async def effectif_grade(self, ctx):
         guild = ctx.guild
 
@@ -38,10 +39,14 @@ class EffeGrade(commands.Cog):
             for user in role['list_users']:
                 list_users.append(f"• {user.mention}")
             if list_users == []: list_users = ["Aucun"]
-            if role['count'] > 1 or role['count'] == 0: prefix, suffix = "Nos", "s"
-            else: prefix, suffix = "Notre", ""
-            if "+" not in role['name']: role['name'] = f"{prefix} {role['name']}{suffix}"
-            else: role['name'] = f"{prefix} {role['name'].replace('#', suffix).replace('+', '')}"
+            if role['count'] > 1 or role['count'] == 0:
+                prefix, suffix = "Nos", "s"
+            else:
+                prefix, suffix = "Notre", ""
+            if "+" not in role['name']:
+                role['name'] = f"{prefix} {role['name']}{suffix}"
+            else:
+                role['name'] = f"{prefix} {role['name'].replace('#', suffix).replace('+', '')}"
             embed.add_field(name=f"{role['name']} ({role['count']})",
                             value="\n".join(list_users),
                             inline=False)
@@ -51,6 +56,7 @@ class EffeGrade(commands.Cog):
         embed.set_footer(icon_url=guild.icon_url, text=f"{guild.name}")
 
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(EffeGrade(bot))
