@@ -5,27 +5,28 @@ from discord_slash.utils.manage_components import *
 from discord_components import *
 
 
+def convert(time):
+
+    pos = ["s", "m", "h", "d"]
+
+    time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
+
+    unit = time[-1]
+
+    if unit not in pos:
+        return -1
+
+    try:
+        val = int(time[:-1])
+    except:
+        return -2
+
+    return val * time_dict[unit]
+
+
 class Enchere(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def convert(self, time):
-
-        pos = ["s", "m", "h", "d"]
-
-        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
-
-        unit = time[-1]
-
-        if unit not in pos:
-            return -1
-
-        try:
-            val = int(time[:-1])
-        except:
-            return -2
-
-        return val * time_dict[unit]
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -43,12 +44,10 @@ class Enchere(commands.Cog):
         await ctx.message.delete()
 
     @commands.Cog.listener()
-    async def on_button_click(self, interaction: Interaction):
-        guild = self.bot.get_guild(705089080693751850)
-        channel = interaction.channel
-        if interaction.custom_id == "enchere":
-            await interaction.respond(type=7)
-            author = interaction.user
+    async def on_button_click(self, interactions: Interaction):
+        channel = interactions.channel
+        if interactions.custom_id == "enchere":
+            await interactions.respond(type=7)
 
             em1 = discord.Embed(description="Dans quel channel souhaitez-vous lancer l'enchère?",
                                 color=0xFFA500)
@@ -61,15 +60,15 @@ class Enchere(commands.Cog):
                 color=0xFFA500)
             em6 = discord.Embed(description="Quel est l'id du vendeur'?", color=0xFFA500)
 
-            await interaction.channel.send(embed=em1)
+            await interactions.channel.send(embed=em1)
 
             try:
                 channele = await self.bot.wait_for("message", timeout=60,
                                                    check=lambda
-                                                       msg: interaction.author == msg.author and channel == msg.channel)
+                                                       msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=1, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=1, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
             digits = "0123456789"
@@ -81,65 +80,66 @@ class Enchere(commands.Cog):
 
             channele_id = int(channele_id)
 
-            message = await interaction.channel.send(embed=em2)
+            await interactions.channel.send(embed=em2)
 
             try:
                 item = await self.bot.wait_for("message", timeout=60,
                                                check=lambda
-                                                   msg: interaction.author == msg.author and channel == msg.channel)
+                                                   msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=3, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=3, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em3)
+            await interactions.channel.send(embed=em3)
 
             try:
                 prix = await self.bot.wait_for("message", timeout=60,
                                                check=lambda
-                                                   msg: interaction.author == msg.author and channel == msg.channel)
+                                                   msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=5, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=5, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em4)
+            await interactions.channel.send(embed=em4)
 
             try:
                 duree = await self.bot.wait_for("message", timeout=60,
                                                 check=lambda
-                                                    msg: interaction.author == msg.author and channel == msg.channel)
+                                                    msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=7, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=7, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em5)
+            await interactions.channel.send(embed=em5)
 
             try:
                 pas = await self.bot.wait_for("message", timeout=60,
                                               check=lambda
-                                                  msg: interaction.author == msg.author and channel == msg.channel)
+                                                  msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=9, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=9, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em6)
+            await interactions.channel.send(embed=em6)
 
             try:
                 vendeurid = await self.bot.wait_for("message", timeout=60,
                                                     check=lambda
-                                                        msg: interaction.author == msg.author and channel == msg.channel)
+                                                        msg: interactions.author == msg.author and channel == msg.channel)
             except:
-                await interaction.channel.purge(limit=11, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
+                await interactions.channel.purge(limit=11, check=lambda msg: not msg.pinned)
+                await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
 
-            await interaction.channel.purge(limit=12, check=lambda msg: not msg.pinned)
+            await interactions.channel.purge(limit=12, check=lambda msg: not msg.pinned)
 
-            time = self.convert(duree.content)
+            time = convert(duree.content)
             fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
+            month = "Aucun"
 
             if fin.month == 1:
                 month = "Janvier"

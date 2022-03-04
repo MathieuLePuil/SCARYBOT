@@ -19,7 +19,7 @@ class Conditionspart(commands.Cog):
         await ctx.message.delete()
 
 
-###!conditionspart 300 600 900
+# !conditionspart 300 600 900
 
 def setup(bot):
     bot.add_cog(Conditionspart(bot))

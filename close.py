@@ -12,8 +12,6 @@ class Close(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def close(self, ctx):
 
-        channel_id = ctx.channel.id
-
         def check(message):
             return message.author == ctx.author and message.channel == ctx.channel
 

@@ -5,32 +5,33 @@ import datetime
 from discord_slash import cog_ext
 
 
+def convert(time):
+
+    pos = ["s", "m", "h", "d"]
+
+    time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
+
+    unit = time[-1]
+
+    if unit not in pos:
+        return -1
+
+    try:
+        val = int(time[:-1])
+    except:
+        return -2
+
+    return val * time_dict[unit]
+
+
 class Rappel(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    def convert(self, time):
-
-        pos = ["s", "m", "h", "d"]
-
-        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
-
-        unit = time[-1]
-
-        if unit not in pos:
-            return -1
-
-        try:
-            val = int(time[:-1])
-        except:
-            return -2
-
-        return val * time_dict[unit]
-
     @cog_ext.cog_slash(name="rappel", description="Met un rappel dans un certain temps dans un channel spécifique.")
     @commands.has_permissions(kick_members=True)
     async def rappel(self, ctx, channel: discord.TextChannel, duree, reason="Aucune raison n'a été renseignée"):
-        time = self.convert(duree)
+        time = convert(duree)
         fin = datetime.datetime.now() + datetime.timedelta(seconds=time)
         month = "Aucun"
 

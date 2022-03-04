@@ -38,7 +38,7 @@ class EffeGrade(commands.Cog):
             list_users = []
             for user in role['list_users']:
                 list_users.append(f"• {user.mention}")
-            if list_users == []: list_users = ["Aucun"]
+            if not list_users: list_users = ["Aucun"]
             if role['count'] > 1 or role['count'] == 0:
                 prefix, suffix = "Nos", "s"
             else:

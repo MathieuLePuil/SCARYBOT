@@ -4,27 +4,28 @@ import asyncio
 from discord_slash import cog_ext
 
 
+def convert(time):
+
+    pos = ["s", "m", "h", "d"]
+
+    time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
+
+    unit = time[-1]
+
+    if unit not in pos:
+        return -1
+
+    try:
+        val = int(time[:-1])
+    except:
+        return -2
+
+    return val * time_dict[unit]
+
+
 class Eblacklist(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def convert(self, time):
-
-        pos = ["s", "m", "h", "d"]
-
-        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
-
-        unit = time[-1]
-
-        if unit not in pos:
-            return -1
-
-        try:
-            val = int(time[:-1])
-        except:
-            return -2
-
-        return val * time_dict[unit]
 
     @cog_ext.cog_slash(name="eblacklist", description="Blacklister un joueur qui n a pas respecte les encheres.")
     @commands.has_permissions(kick_members=True)
@@ -64,7 +65,7 @@ class Eblacklist(commands.Cog):
 
         else:
 
-            time = self.convert(duree)
+            time = convert(duree)
 
             await ctx.send(embed=embed)
             await log_channel.send(embed=embed)

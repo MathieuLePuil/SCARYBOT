@@ -8,7 +8,7 @@ class On_command_error(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         if isinstance(error, commands.MissingPermissions):
-            msg1 = await ctx.send("Vous n'avez pas la permission d'effectuer cette commande!", delete_after="2")
+            await ctx.send("Vous n'avez pas la permission d'effectuer cette commande!", delete_after="2")
 
 
 def setup(bot):

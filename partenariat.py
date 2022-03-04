@@ -19,7 +19,7 @@ class Partenariat(commands.Cog):
         await ctx.message.delete()
 
 
-###!partenariat
+# !partenariat
 
 def setup(bot):
     bot.add_cog(Partenariat(bot))

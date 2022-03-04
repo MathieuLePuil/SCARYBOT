@@ -7,21 +7,55 @@ from discord_components import *
 from discord_slash.utils.manage_components import *
 
 
+async def get_commande_data():
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "r") as f:
+        commandeinfo = json.load(f)
+
+    return commandeinfo
+
+
+async def when_commande(channel):
+    commandeinfo = await get_commande_data()
+
+    if str(channel.id) in commandeinfo:
+        return False
+    else:
+
+        commandeinfo[str(channel.id)] = {}
+        commandeinfo[str(channel.id)]["channel_id"] = channel.id
+        commandeinfo[str(channel.id)]["Acheteur (name)"] = "Acheteur (name)"
+        commandeinfo[str(channel.id)]["Acheteur (discriminator)"] = "Acheteur (discriminator)"
+        commandeinfo[str(channel.id)]["Acheteur (ID)"] = "Acheteur (ID)"
+        commandeinfo[str(channel.id)]["Item"] = "Item"
+        commandeinfo[str(channel.id)]["Quantite"] = "Quantite"
+        commandeinfo[str(channel.id)]["Prix"] = "Prix"
+        commandeinfo[str(channel.id)]["Pseudo IG"] = "Pseudo IG"
+        commandeinfo[str(channel.id)]["Reduction"] = "Reduction"
+        commandeinfo[str(channel.id)]["Message1"] = "Message 1"
+        commandeinfo[str(channel.id)]["Message2"] = "Message 2"
+        commandeinfo[str(channel.id)]["Numero"] = "Numero"
+        commandeinfo[str(channel.id)]["Logs"] = "Logs"
+
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
+        json.dump(commandeinfo, f, indent=2)
+    return True
+
+
 class Commande(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
-    async def on_button_click(self, interaction: Interaction):
+    async def on_button_click(self, interactions: Interaction):
         guild = self.bot.get_guild(705089080693751850)
         catego = self.bot.get_channel(733746634172923904)
         role = guild.get_role(705093311248990312)
         modo = guild.get_role(832699561255501834)
         resprole = guild.get_role(849934378175823874)
         log_channel = self.bot.get_channel(935648359027466380)
-        channel = interaction.channel
-        if interaction.custom_id == "commande":
-            await interaction.respond(type=7)
+        channel = interactions.channel
+        if interactions.custom_id == "commande":
+            await interactions.respond(type=7)
 
             with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande.json", 'r') as f:
                 data = json.load(f)
@@ -29,12 +63,12 @@ class Commande(commands.Cog):
             ticket_number = int(data["ticket-counter"])
             ticket_number += 1
 
-            author = interaction.user
+            author = interactions.user
 
             ticket_channel = await guild.create_text_channel(f"🔴〡{author.name}-{ticket_number}", category=catego)
-            await self.when_commande(ticket_channel)
+            await when_commande(ticket_channel)
             channel = ticket_channel
-            commandeinfo = await self.get_commande_data()
+            commandeinfo = await get_commande_data()
             await ticket_channel.set_permissions(guild.get_role(guild.id), send_messages=False, read_messages=False)
 
             await ticket_channel.set_permissions(role, send_messages=False, read_messages=False, add_reactions=True,
@@ -66,26 +100,26 @@ class Commande(commands.Cog):
                 print(f"Il y a une erreur!")
 
             with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
-                commandeinfo = json.dump(commandeinfo, f, indent=2)
+                json.dump(commandeinfo, f, indent=2)
 
             data["ticket-counter"] = int(ticket_number)
 
             with open("nbrcommande.json", 'w') as f:
                 json.dump(data, f)
 
-        elif interaction.custom_id == "procedure":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "procedure":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(interactions.channel)
+            commandeinfo = await get_commande_data()
 
             reduction = "Aucune"
 
-            troispc = interaction.guild.get_role(836949397089812511)
-            septpc = interaction.guild.get_role(833274658467348480)
-            dixpc = interaction.guild.get_role(833788987516256298)
-            quinzepc = interaction.guild.get_role(871680557602439189)
+            troispc = interactions.guild.get_role(836949397089812511)
+            septpc = interactions.guild.get_role(833274658467348480)
+            dixpc = interactions.guild.get_role(833788987516256298)
+            quinzepc = interactions.guild.get_role(871680557602439189)
             if troispc in author.roles:
                 reduction = "- 3%"
             if septpc in author.roles:
@@ -102,51 +136,51 @@ class Commande(commands.Cog):
                                 color=0xFFA500)
             em4 = discord.Embed(description="Quel est votre pseudo IG?", color=0xFFA500)
 
-            await interaction.channel.send(embed=em1)
+            await interactions.channel.send(embed=em1)
 
             try:
                 item = await self.bot.wait_for("message", timeout=60,
                                                check=lambda
-                                                   msg: interaction.author == msg.author and channel == msg.channel)
+                                                       msgs: interactions.author == msgs.author and channel == msgs.channel)
             except:
-                await interaction.channel.purge(limit=1, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Veuillez réiterer votre commande.", delete_after=10)
+                await interactions.channel.purge(limit=1, check=lambda msgs: not msgs.pinned)
+                await interactions.channel.send("Veuillez réiterer votre commande.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em2)
+            await interactions.channel.send(embed=em2)
 
             try:
                 quantite = await self.bot.wait_for("message", timeout=60,
                                                    check=lambda
-                                                       msg: interaction.author == msg.author and channel == msg.channel)
+                                                           msgs: interactions.author == msgs.author and channel == msgs.channel)
             except:
-                await interaction.channel.purge(limit=3, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Veuillez réiterer votre commande.", delete_after=10)
+                await interactions.channel.purge(limit=3, check=lambda msgs: not msgs.pinned)
+                await interactions.channel.send("Veuillez réiterer votre commande.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em3)
+            await interactions.channel.send(embed=em3)
 
             try:
                 prix = await self.bot.wait_for("message", timeout=60,
                                                check=lambda
-                                                   msg: interaction.author == msg.author and channel == msg.channel)
+                                                       msgs: interactions.author == msg.author and channel == msgs.channel)
             except:
-                await interaction.channel.purge(limit=5, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Veuillez réiterer votre commande.", delete_after=10)
+                await interactions.channel.purge(limit=5, check=lambda msgs: not msgs.pinned)
+                await interactions.channel.send("Veuillez réiterer votre commande.", delete_after=10)
                 return
 
-            message = await interaction.channel.send(embed=em4)
+            await interactions.channel.send(embed=em4)
 
             try:
                 pseudo = await self.bot.wait_for("message", timeout=60,
                                                  check=lambda
-                                                     msg: interaction.author == msg.author and channel == msg.channel)
+                                                         msgs: interactions.author == msgs.author and channel == msgs.channel)
             except:
-                await interaction.channel.purge(limit=7, check=lambda msg: not msg.pinned)
-                await interaction.channel.send("Veuillez réiterer votre commande.", delete_after=10)
+                await interactions.channel.purge(limit=7, check=lambda msgs: not msgs.pinned)
+                await interactions.channel.send("Veuillez réiterer votre commande.", delete_after=10)
                 return
 
-            await interaction.channel.purge(limit=None, check=lambda msg: not msg.pinned)
+            await interactions.channel.purge(limit=None, check=lambda msgs: not msgs.pinned)
 
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
 
@@ -164,7 +198,7 @@ class Commande(commands.Cog):
                 url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
 
             emp = discord.Embed(title="**Suivi du votre commande**",
-                                description=f"<a:fleche_new:915897203392917514> Votre commande à été signalé aux vendeurs. \n \n > *`Item commandé:`* **{item.content}** \n > *`Quantité souhaité:`* **{quantite.content}** \n > *`Prix total:`* **{prix.content}**$ \n \n \n 🛒 __**Vos informations:**__ \n \n > *`Pseudo Discord:`* **{interaction.user.mention}** \n > *`Pseudo IG:`* **{pseudo.content}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n Commande n°**{ticket_number}**",
+                                description=f"<a:fleche_new:915897203392917514> Votre commande à été signalé aux vendeurs. \n \n > *`Item commandé:`* **{item.content}** \n > *`Quantité souhaité:`* **{quantite.content}** \n > *`Prix total:`* **{prix.content}**$ \n \n \n 🛒 __**Vos informations:**__ \n \n > *`Pseudo Discord:`* **{interactions.user.mention}** \n > *`Pseudo IG:`* **{pseudo.content}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n Commande n°**{ticket_number}**",
                                 color=0xFFA500, timestamp=datetime.datetime.utcnow())
             emp.set_thumbnail(
                 url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
@@ -193,8 +227,8 @@ class Commande(commands.Cog):
 
             await message1.pin()
             message2 = await log_channel.send(embed=emb)
-            message3 = await interaction.author.send(embed=emp)
-            messages = await interaction.channel.history(limit=1).flatten()
+            await interactions.author.send(embed=emp)
+            messages = await interactions.channel.history(limit=1).flatten()
             for message in messages:
                 await message.delete()
 
@@ -213,38 +247,38 @@ class Commande(commands.Cog):
                 print(f"Il y a une erreur!")
 
             with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
-                commandeinfo = json.dump(commandeinfo, f, indent=2)
+                json.dump(commandeinfo, f, indent=2)
 
-            await interaction.channel.set_permissions(role, send_messages=True, read_messages=True, add_reactions=True,
-                                                      embed_links=True, attach_files=True, read_message_history=True,
-                                                      external_emojis=True)
-            await interaction.channel.set_permissions(modo, send_messages=True, read_messages=True, add_reactions=True,
-                                                      embed_links=True, attach_files=True, read_message_history=True,
-                                                      external_emojis=True)
-            await interaction.channel.send("<@&705093311248990312>", delete_after=1)
+            await interactions.channel.set_permissions(role, send_messages=True, read_messages=True, add_reactions=True,
+                                                       embed_links=True, attach_files=True, read_message_history=True,
+                                                       external_emojis=True)
+            await interactions.channel.set_permissions(modo, send_messages=True, read_messages=True, add_reactions=True,
+                                                       embed_links=True, attach_files=True, read_message_history=True,
+                                                       external_emojis=True)
+            await interactions.channel.send("<@&705093311248990312>", delete_after=1)
 
 
 
-        elif interaction.custom_id == "newprix":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "newprix":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(channel=interactions.channel)
+            commandeinfo = await get_commande_data()
 
-            vendeur = interaction.guild.get_role(705093311248990312)
+            vendeur = interactions.guild.get_role(705093311248990312)
 
             if vendeur in author.roles:
                 em = discord.Embed(description="Quel est le nouveau prix de la commande? (sans le $)", color=0xFFA500)
 
-                message = await interaction.channel.send(embed=em)
+                await interactions.channel.send(embed=em)
 
                 try:
                     newprix = await self.bot.wait_for("message", timeout=60,
                                                       check=lambda
-                                                          msg: interaction.author == msg.author and channel == msg.channel)
+                                                              msgs: interactions.author == msgs.author and channel == msgs.channel)
                 except:
-                    await interaction.channel.send("Veuillez recommencer le changement de prix.")
+                    await interactions.channel.send("Veuillez recommencer le changement de prix.")
                     return
 
                 try:
@@ -253,21 +287,21 @@ class Commande(commands.Cog):
                     print(f"Il y a une erreur!")
 
                 with open("commande.json", "w") as f:
-                    commandeinfo = json.dump(commandeinfo, f, indent=2)
+                    json.dump(commandeinfo, f, indent=2)
 
-                await interaction.channel.purge(limit=2, check=lambda msg: not msg.pinned)
+                await interactions.channel.purge(limit=2, check=lambda msgs: not msgs.pinned)
 
-                message_newprix = await interaction.channel.send(f"Le *nouveau prix* est **{newprix.content}$**.",
-                                                                 delete_after=5)
+                await interactions.channel.send(f"Le *nouveau prix* est **{newprix.content}$**.",
+                                                delete_after=5)
 
 
 
-        elif interaction.custom_id == "takecommande":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "takecommande":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(channel=interactions.channel)
+            commandeinfo = await get_commande_data()
 
             acheteurname = commandeinfo[str(channel.id)]["Acheteur (name)"]
             acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
@@ -280,27 +314,27 @@ class Commande(commands.Cog):
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
 
-            vendeur = interaction.guild.get_role(705093311248990312)
+            vendeur = interactions.guild.get_role(705093311248990312)
 
             if vendeur in author.roles:
 
-                await interaction.channel.set_permissions(role, send_messages=False, read_messages=False,
-                                                          add_reactions=True,
-                                                          embed_links=True, attach_files=True,
-                                                          read_message_history=False,
-                                                          external_emojis=True)
-                await interaction.channel.set_permissions(author, send_messages=True, read_messages=True,
-                                                          add_reactions=True,
-                                                          embed_links=True, attach_files=True,
-                                                          read_message_history=True,
-                                                          external_emojis=True)
-                await interaction.channel.set_permissions(modo, send_messages=True, read_messages=True,
-                                                          add_reactions=True,
-                                                          embed_links=True, attach_files=True,
-                                                          read_message_history=True,
-                                                          external_emojis=True)
+                await interactions.channel.set_permissions(role, send_messages=False, read_messages=False,
+                                                           add_reactions=True,
+                                                           embed_links=True, attach_files=True,
+                                                           read_message_history=False,
+                                                           external_emojis=True)
+                await interactions.channel.set_permissions(author, send_messages=True, read_messages=True,
+                                                           add_reactions=True,
+                                                           embed_links=True, attach_files=True,
+                                                           read_message_history=True,
+                                                           external_emojis=True)
+                await interactions.channel.set_permissions(modo, send_messages=True, read_messages=True,
+                                                           add_reactions=True,
+                                                           embed_links=True, attach_files=True,
+                                                           read_message_history=True,
+                                                           external_emojis=True)
 
-                await interaction.channel.edit(name=f"🟢〡{acheteurname}-{ticket_number}")
+                await interactions.channel.edit(name=f"🟢〡{acheteurname}-{ticket_number}")
                 embed = discord.Embed(title="<a:load:899616055213817886> Commande en cours de préparation...",
                                       description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`Pseudo Discord:`* **<@{acheteurid}>** \n > *`ID:`* **{acheteurid}** \n > *`Réduction:`* **{reduction}** \n \n \n 💼 __**Informations du vendeur:**__ \n \n > *`Pseudo vendeur:`* **{author.mention}** \n > *`ID vendeur:`* **{author.id}** \n \n Commande n°**{ticket_number}**",
                                       color=0xFFA500, timestamp=datetime.datetime.utcnow())
@@ -315,11 +349,11 @@ class Commande(commands.Cog):
                                                                      id="whitelist")]])
                 await interaction.channel.send(f"<@{acheteurid}>", delete_after=1)
                 await message2.pin()
-                messages = await interaction.channel.history(limit=1).flatten()
+                messages = await interactions.channel.history(limit=1).flatten()
                 for message in messages:
                     await message.delete()
             else:
-                await interaction.channel.send(
+                await interactions.channel.send(
                     "Vous **n'êtes pas Vendeur**. Vous n'avez donc ***pas la permission de prendre des commandes***.",
                     delete_after=5)
                 return
@@ -329,7 +363,7 @@ class Commande(commands.Cog):
             await msg.delete()
 
             emb = discord.Embed(title=f"Commande n°{ticket_number}",
-                                description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **En cours de préparation** \n > *`Vendeur:`* {interaction.user.mention}",
+                                description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **En cours de préparation** \n > *`Vendeur:`* {interactions.user.mention}",
                                 color=0xFFA500, timestamp=datetime.datetime.utcnow())
             emb.set_thumbnail(
                 url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
@@ -342,29 +376,27 @@ class Commande(commands.Cog):
                 print(f"Il y a une erreur!")
 
             with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
-                commandeinfo = json.dump(commandeinfo, f, indent=2)
+                json.dump(commandeinfo, f, indent=2)
 
 
 
-        elif interaction.custom_id == "delcommande":
-            author = interaction.user
-            await interaction.respond(type=7)
+        elif interactions.custom_id == "delcommande":
+            author = interactions.user
+            await interactions.respond(type=7)
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
-            acheteurname = commandeinfo[str(channel.id)]["Acheteur (name)"]
+            await when_commande(channel=interactions.channel)
+            commandeinfo = await get_commande_data()
             acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
             item = commandeinfo[str(channel.id)]["Item"]
             quantite = commandeinfo[str(channel.id)]["Quantite"]
             prix = commandeinfo[str(channel.id)]["Prix"]
             pseudoig = commandeinfo[str(channel.id)]["Pseudo IG"]
             reduction = commandeinfo[str(channel.id)]["Reduction"]
-            message1 = commandeinfo[str(channel.id)]["Message1"]
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
 
-            if interaction.user.id == acheteurid:
-                await interaction.channel.delete()
+            if interactions.user.id == acheteurid:
+                await interactions.channel.delete()
                 logsmsg = await log_channel.fetch_message(logsmessage)
 
                 emb = discord.Embed(title=f"Commande n°{ticket_number}",
@@ -375,19 +407,19 @@ class Commande(commands.Cog):
 
                 await logsmsg.edit(embed=emb)
             else:
-                await interaction.channel.send(
+                await interactions.channel.send(
                     "Vous **n'êtes pas acheteur**. Vous n'avez donc ***pas la permission d'annuler la commande***.",
                     delete_after=5)
                 return
 
 
 
-        elif interaction.custom_id == "endcommande":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "endcommande":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(channel=interactions.channel)
+            commandeinfo = await get_commande_data()
 
             acheteurname = commandeinfo[str(channel.id)]["Acheteur (name)"]
             acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
@@ -400,11 +432,11 @@ class Commande(commands.Cog):
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
 
-            vendeur = interaction.guild.get_role(705093311248990312)
+            vendeur = interactions.guild.get_role(705093311248990312)
 
             if vendeur in author.roles:
 
-                await interaction.channel.edit(name=f"🔵〡{acheteurname}-{ticket_number}")
+                await interactions.channel.edit(name=f"🔵〡{acheteurname}-{ticket_number}")
 
                 embed = discord.Embed(title="💸 Commande prête",
                                       description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`Pseudo Discord:`* **<@{acheteurid}>** \n > *`ID:`* **{acheteurid}** \n > *`Réduction:`* **{reduction}** \n \n \n 💼 __**Informations du vendeur:**__ \n \n > *`Pseudo vendeur:`* **{author.mention}** \n > *`ID vendeur:`* **{author.id}** \n \n Commande n°**{ticket_number}**",
@@ -418,11 +450,11 @@ class Commande(commands.Cog):
                                                                      id="close")]])
                 await interaction.channel.send(f"<@{acheteurid}>", delete_after=1)
                 await message3.pin()
-                messages = await interaction.channel.history(limit=1).flatten()
+                messages = await interactions.channel.history(limit=1).flatten()
                 for message in messages:
                     await message.delete()
             else:
-                await interaction.channel.send(
+                await interactions.channel.send(
                     "Vous **n'êtes pas Vendeur**. Vous n'avez donc ***pas la permission de faire des commandes***.",
                     delete_after=5)
                 return
@@ -433,7 +465,7 @@ class Commande(commands.Cog):
             logsmsg = await log_channel.fetch_message(logsmessage)
 
             emb = discord.Embed(title=f"Commande n°{ticket_number}",
-                                description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **En cours de livraison** \n > *`Vendeur:`* {interaction.user.mention}",
+                                description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **En cours de livraison** \n > *`Vendeur:`* {interactions.user.mention}",
                                 color=0xFFA500, timestamp=datetime.datetime.utcnow())
             emb.set_thumbnail(
                 url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
@@ -441,54 +473,53 @@ class Commande(commands.Cog):
             await logsmsg.edit(embed=emb)
 
 
-        elif interaction.custom_id == "whitelist":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "whitelist":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(channel=interactions.channel)
+            await get_commande_data()
 
-            vendeur = interaction.guild.get_role(705093311248990312)
+            vendeur = interactions.guild.get_role(705093311248990312)
 
             if vendeur in author.roles:
                 em = discord.Embed(description="Quel est l'ID du vendeur que vous souhaitez Whitelist?", color=0xFFA500)
 
-                message = await interaction.channel.send(embed=em)
+                await interactions.channel.send(embed=em)
 
                 try:
                     whitelist_user = await self.bot.wait_for("message", timeout=60,
                                                              check=lambda
-                                                                 msg: interaction.author == msg.author and channel == msg.channel)
+                                                                     msgs: interactions.author == msgs.author and channel == msgs.channel)
                 except:
-                    await interaction.channel.send("Veuillez recommencer la procédure de whitelist.")
+                    await interactions.channel.send("Veuillez recommencer la procédure de whitelist.")
                     return
 
-                guild = self.bot.get_guild(705089080693751850)
                 user_whitelist = self.bot.get_user(int(whitelist_user.content))
 
-                await interaction.channel.set_permissions(user_whitelist, send_messages=True, read_messages=True,
-                                                          add_reactions=True,
-                                                          embed_links=True, attach_files=True,
-                                                          read_message_history=True,
-                                                          external_emojis=True)
+                await interactions.channel.set_permissions(user_whitelist, send_messages=True, read_messages=True,
+                                                           add_reactions=True,
+                                                           embed_links=True, attach_files=True,
+                                                           read_message_history=True,
+                                                           external_emojis=True)
 
-                await interaction.channel.purge(limit=2, check=lambda msg: not msg.pinned)
+                await interactions.channel.purge(limit=2, check=lambda msgs: not msgs.pinned)
 
-                await interaction.channel.send(f"<@{whitelist_user.content}> a bien été **Whitelist**.", delete_after=5)
+                await interactions.channel.send(f"<@{whitelist_user.content}> a bien été **Whitelist**.",
+                                                delete_after=5)
 
             else:
-                await interaction.channel.send(
+                await interactions.channel.send(
                     "Vous **n'êtes pas Vendeur**. Vous n'avez donc ***pas la permission de whitelist des vendeurs***.",
                     delete_after=5)
 
-        elif interaction.custom_id == "close":
-            await interaction.respond(type=7)
-            author = interaction.user
+        elif interactions.custom_id == "close":
+            await interactions.respond(type=7)
+            author = interactions.user
 
-            await self.when_commande(channel=interaction.channel)
-            commandeinfo = await self.get_commande_data()
+            await when_commande(channel=interactions.channel)
+            commandeinfo = await get_commande_data()
 
-            acheteurname = commandeinfo[str(channel.id)]["Acheteur (name)"]
             acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
             item = commandeinfo[str(channel.id)]["Item"]
             quantite = commandeinfo[str(channel.id)]["Quantite"]
@@ -498,7 +529,7 @@ class Commande(commands.Cog):
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
 
-            vendeur = interaction.guild.get_role(705093311248990312)
+            vendeur = interactions.guild.get_role(705093311248990312)
             acheteur = guild.get_member(acheteurid)
 
             if vendeur in author.roles:
@@ -515,24 +546,24 @@ class Commande(commands.Cog):
                     emclose.set_footer(text="ScaryBot",
                                        icon_url="https://cdn.discordapp.com/emojis/834364622555054080.png?size=128")
 
-                    await interaction.channel.send(embed=em)
+                    await interactions.channel.send(embed=em)
                     msg = await self.bot.wait_for('message', check=lambda
-                        msg: interaction.author == msg.author and channel == msg.channel, timeout=60)
+                            msgs: interactions.author == msgs.author and channel == msgs.channel, timeout=60)
 
                     if msg.content == "close":
-                        await interaction.channel.delete()
+                        await interactions.channel.delete()
                         await acheteur.send(embed=emclose)
                     elif msg.content == "Close":
-                        await interaction.channel.delete()
+                        await interactions.channel.delete()
                         await acheteur.send(embed=emclose)
                     else:
-                        await interaction.channel.send(embed=em1)
+                        await interactions.channel.send(embed=em1)
                         return
 
                     logsmsg = await log_channel.fetch_message(logsmessage)
 
                     emb = discord.Embed(title=f"Commande n°{ticket_number}",
-                                        description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **Terminé** \n > *`Vendeur:`* {interaction.user.mention}",
+                                        description=f"💳 __**Informations de la commande:**__ \n \n > *`Item commandé:`* **{item}** \n > *`Quantité souhaité:`* **{quantite}** \n > *`Prix total:`* **{prix}**$ \n \n \n 🛒 __**Informations de l'acheteur:**__ \n \n > *`Pseudo IG:`* **{pseudoig}** \n > *`ID:`* **{author.id}** \n > *`Réduction:`* **{reduction}** \n \n 💠 __**Statut:**__ \n \n > 🔔 **Terminé** \n > *`Vendeur:`* {interactions.user.mention}",
                                         color=0xFFA500, timestamp=datetime.datetime.utcnow())
                     emb.set_thumbnail(
                         url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
@@ -543,10 +574,10 @@ class Commande(commands.Cog):
                     em = discord.Embed(title="Fermeture",
                                        description="Vous avez mis trop de temps à répondre, veuillez refaire !close.",
                                        color=0x00a8ff)
-                    await interaction.channel.send(embed=em)
+                    await interactions.channel.send(embed=em)
 
             else:
-                await interaction.channel.send(
+                await interactions.channel.send(
                     "Vous **n'êtes pas Vendeur**. Vous n'avez donc ***pas la permission d'unclaim des commandes***.",
                     delete_after=5)
                 return
@@ -565,38 +596,6 @@ class Commande(commands.Cog):
         await ctx.send(embed=embed,
                        components=[Button(style=ButtonStyle.green, label="🛒 Commander", custom_id="commande")])
         await ctx.message.delete()
-
-    async def when_commande(self, channel):
-        commandeinfo = await self.get_commande_data()
-
-        if str(channel.id) in commandeinfo:
-            return False
-        else:
-
-            commandeinfo[str(channel.id)] = {}
-            commandeinfo[str(channel.id)]["channel_id"] = channel.id
-            commandeinfo[str(channel.id)]["Acheteur (name)"] = "Acheteur (name)"
-            commandeinfo[str(channel.id)]["Acheteur (discriminator)"] = "Acheteur (discriminator)"
-            commandeinfo[str(channel.id)]["Acheteur (ID)"] = "Acheteur (ID)"
-            commandeinfo[str(channel.id)]["Item"] = "Item"
-            commandeinfo[str(channel.id)]["Quantite"] = "Quantite"
-            commandeinfo[str(channel.id)]["Prix"] = "Prix"
-            commandeinfo[str(channel.id)]["Pseudo IG"] = "Pseudo IG"
-            commandeinfo[str(channel.id)]["Reduction"] = "Reduction"
-            commandeinfo[str(channel.id)]["Message1"] = "Message 1"
-            commandeinfo[str(channel.id)]["Message2"] = "Message 2"
-            commandeinfo[str(channel.id)]["Numero"] = "Numero"
-            commandeinfo[str(channel.id)]["Logs"] = "Logs"
-
-        with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
-            commandeinfo = json.dump(commandeinfo, f, indent=2)
-        return True
-
-    async def get_commande_data(self):
-        with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "r") as f:
-            commandeinfo = json.load(f)
-
-        return commandeinfo
 
 
 def setup(bot):

@@ -4,27 +4,28 @@ from discord_slash.utils.manage_components import *
 from discord_slash import cog_ext
 
 
+def convert(time):
+
+    pos = ["s", "m", "h", "d"]
+
+    time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
+
+    unit = time[-1]
+
+    if unit not in pos:
+        return -1
+
+    try:
+        val = int(time[:-1])
+    except:
+        return -2
+
+    return val * time_dict[unit]
+
+
 class Role(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    def convert(self, time):
-
-        pos = ["s", "m", "h", "d"]
-
-        time_dict = {"s": 1, "m": 60, "h": 3600, "d": 3600 * 24}
-
-        unit = time[-1]
-
-        if unit not in pos:
-            return -1
-
-        try:
-            val = int(time[:-1])
-        except:
-            return -2
-
-        return val * time_dict[unit]
 
     @cog_ext.cog_slash(name="tempgrade", description="Mettre temporairement un rôle payant à un joueur.")
     @commands.has_permissions(ban_members=True)
@@ -53,7 +54,7 @@ class Role(commands.Cog):
             await user.add_roles(rolebarre2)
             await user.add_roles(rolebarre3)
             await user.add_roles(rolebarre4)
-            time = self.convert(duree)
+            time = convert(duree)
             await ctx.send(embed=em1)
 
         if value == "faucheuse":
@@ -74,7 +75,7 @@ class Role(commands.Cog):
             await user.add_roles(rolebarre2)
             await user.add_roles(rolebarre3)
             await user.add_roles(rolebarre4)
-            time = self.convert(duree)
+            time = convert(duree)
             await ctx.send(embed=em1)
 
         if value == "fantome":
@@ -95,7 +96,7 @@ class Role(commands.Cog):
             await user.add_roles(rolebarre2)
             await user.add_roles(rolebarre3)
             await user.add_roles(rolebarre4)
-            time = self.convert(duree)
+            time = convert(duree)
             await ctx.send(embed=em1)
 
         if value == "assassin":
@@ -116,7 +117,7 @@ class Role(commands.Cog):
             await user.add_roles(rolebarre2)
             await user.add_roles(rolebarre3)
             await user.add_roles(rolebarre4)
-            time = self.convert(duree)
+            time = convert(duree)
             await ctx.send(embed=em1)
 
         await asyncio.sleep(time)
