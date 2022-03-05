@@ -8,7 +8,7 @@ from discord_slash.utils.manage_components import *
 
 
 async def get_commande_data():
-    with open("commande.json", "r") as f:
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "r") as f:
         commandeinfo = json.load(f)
 
     return commandeinfo
@@ -36,7 +36,7 @@ async def when_commande(channel):
         commandeinfo[str(channel.id)]["Numero"] = "Numero"
         commandeinfo[str(channel.id)]["Logs"] = "Logs"
 
-    with open("commande.json", "w") as f:
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
         json.dump(commandeinfo, f, indent=2)
     return True
 
@@ -57,7 +57,7 @@ class Commande(commands.Cog):
         if interactions.custom_id == "commande":
             await interactions.respond(type=7)
 
-            with open("nbrcommande.json", 'r') as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande.json", 'r') as f:
                 data = json.load(f)
 
             ticket_number = int(data["ticket-counter"])
@@ -99,12 +99,12 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("commande.json", "w") as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
             data["ticket-counter"] = int(ticket_number)
 
-            with open("nbrcommande.json", 'w') as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande.json", 'w') as f:
                 json.dump(data, f)
 
         elif interactions.custom_id == "procedure":
@@ -246,7 +246,7 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("commande.json", "w") as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
             await interactions.channel.set_permissions(role, send_messages=True, read_messages=True, add_reactions=True,
@@ -286,7 +286,7 @@ class Commande(commands.Cog):
                 except KeyError:
                     print(f"Il y a une erreur!")
 
-                with open("commande.json", "w") as f:
+                with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                     json.dump(commandeinfo, f, indent=2)
 
                 await interactions.channel.purge(limit=2, check=lambda msgs: not msgs.pinned)
@@ -375,7 +375,7 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("commande.json", "w") as f:
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
 
