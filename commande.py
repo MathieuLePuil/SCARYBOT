@@ -8,7 +8,7 @@ from discord_slash.utils.manage_components import *
 
 
 async def get_commande_data():
-    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "r") as f:
+    with open("commande.json", "r") as f:
         commandeinfo = json.load(f)
 
     return commandeinfo
@@ -36,7 +36,7 @@ async def when_commande(channel):
         commandeinfo[str(channel.id)]["Numero"] = "Numero"
         commandeinfo[str(channel.id)]["Logs"] = "Logs"
 
-    with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
+    with open("commande.json", "w") as f:
         json.dump(commandeinfo, f, indent=2)
     return True
 
@@ -57,7 +57,7 @@ class Commande(commands.Cog):
         if interactions.custom_id == "commande":
             await interactions.respond(type=7)
 
-            with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande.json", 'r') as f:
+            with open("nbrcommande.json", 'r') as f:
                 data = json.load(f)
 
             ticket_number = int(data["ticket-counter"])
@@ -99,7 +99,7 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
+            with open("commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
             data["ticket-counter"] = int(ticket_number)
@@ -162,10 +162,10 @@ class Commande(commands.Cog):
 
             try:
                 prix = await self.bot.wait_for("message", timeout=60,
-                                               check=lambda
-                                                       msgs: interactions.author == msg.author and channel == msgs.channel)
+                                                   check=lambda
+                                                           msgs: interactions.author == msgs.author and channel == msgs.channel)
             except:
-                await interactions.channel.purge(limit=5, check=lambda msgs: not msgs.pinned)
+                await interactions.channel.purge(limit=3, check=lambda msgs: not msgs.pinned)
                 await interactions.channel.send("Veuillez réiterer votre commande.", delete_after=10)
                 return
 
@@ -206,7 +206,7 @@ class Commande(commands.Cog):
                 text="⇾ Vous serez notifié sur le serveur lorsqu'un vendeur aura pris votre commande. Sinon, elle sera close au bout de 2 jours.")
 
             if reduction == "Aucune":
-                message1 = await interaction.channel.send(embed=embed,
+                message1 = await interactions.channel.send(embed=embed,
                                                           components=[[
                                                               Button(style=ButtonStyle.blue,
                                                                      label="Prendre la commande",
@@ -214,7 +214,7 @@ class Commande(commands.Cog):
                                                               Button(style=ButtonStyle.red, label="Annuler la commande",
                                                                      id="delcommande")]])
             else:
-                message1 = await interaction.channel.send(embed=embed,
+                message1 = await interactions.channel.send(embed=embed,
                                                           components=[[
                                                               Button(style=ButtonStyle.blue,
                                                                      label="Prendre la commande",
@@ -246,7 +246,7 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
+            with open("commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
             await interactions.channel.set_permissions(role, send_messages=True, read_messages=True, add_reactions=True,
@@ -375,7 +375,7 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
-            with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
+            with open("commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
 
 
