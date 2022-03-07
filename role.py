@@ -128,7 +128,7 @@ class Role(commands.Cog):
         await user.remove_roles(rolebarre2)
         await user.remove_roles(rolebarre3)
         await user.remove_roles(rolebarre4)
-        await ctx.send(f"{ctx.author.mention}", delete_after=1)
+        await ctx.send(f"<@&705089246037409834> ", delete_after=1)
         await ctx.send(embed=em2)
 
     @cog_ext.cog_slash(name="cles", description="Donner l'accès de son bureau à un utilisateur.")
