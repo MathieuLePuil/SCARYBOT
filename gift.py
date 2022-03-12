@@ -13,6 +13,23 @@ async def get_gift_data():
     return giftinfo
 
 
+async def when_gift(message):
+    giftinfo = await get_gift_data()
+
+    if str(message.id) in giftinfo:
+        return False
+    else:
+        giftinfo[str(message.id)] = {}
+        giftinfo[str(message.id)]["Message ID"] = message.id
+        giftinfo[str(message.id)]["Winner"] = "gagnant"
+        giftinfo[str(message.id)]["Cadeau"] = "cadeau"
+        giftinfo[str(message.id)]["Author ID"] = "id author"
+
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/gift.json", "w") as f:
+        json.dump(giftinfo, f, indent=2)
+    return True
+
+
 class Gift(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -29,7 +46,7 @@ class Gift(commands.Cog):
         giftmsg = await ctx.send(embed=embed,
                                  components=[Button(style=ButtonStyle.green, label="🎁", custom_id="gift")])
 
-        await self.when_gift(message=giftmsg)
+        await when_gift(message=giftmsg)
         giftinfo = await get_gift_data()
 
         try:
@@ -51,7 +68,7 @@ class Gift(commands.Cog):
         if interactions.custom_id == "gift":
             await interactions.respond(type=7)
 
-            await self.when_gift(message=interactions.message)
+            await when_gift(message=interactions.message)
             giftinfo = await get_gift_data()
 
             cadeau = giftinfo[str(message.id)]["Cadeau"]
@@ -73,22 +90,6 @@ class Gift(commands.Cog):
 
         else:
             return
-
-    async def when_gift(self, message):
-        giftinfo = await get_gift_data()
-
-        if str(message.id) in giftinfo:
-            return False
-        else:
-            giftinfo[str(message.id)] = {}
-            giftinfo[str(message.id)]["Message ID"] = message.id
-            giftinfo[str(message.id)]["Winner"] = "gagnant"
-            giftinfo[str(message.id)]["Cadeau"] = "cadeau"
-            giftinfo[str(message.id)]["Author ID"] = "id author"
-
-        with open("/home/mmi21b12/DISCORD/SCARYBOT/gift.json", "w") as f:
-            json.dump(giftinfo, f, indent=2)
-        return True
 
 
 def setup(bot):
