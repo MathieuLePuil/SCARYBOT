@@ -28,8 +28,7 @@ class Support(commands.Cog):
         guild = self.bot.get_guild(705089080693751850)
         catego = self.bot.get_channel(765634020976885822)
         role = guild.get_role(770373622928900166)
-        modo1 = guild.get_role(705090528445857852)
-        modo2 = guild.get_role(705091141124751381)
+        modo1 = guild.get_role(832699561255501834)
         respench = guild.get_role(753490443819417741)
         if interaction.custom_id == "support":
             author = interaction.user
@@ -106,10 +105,6 @@ class Support(commands.Cog):
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
                             await ticket_channel.set_permissions(respench, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
@@ -142,10 +137,6 @@ class Support(commands.Cog):
                                                                  external_emojis=True)
 
                             await ticket_channel.set_permissions(modo1, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
@@ -182,10 +173,6 @@ class Support(commands.Cog):
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
 
                             await ticket_channel.set_permissions(author, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
@@ -214,10 +201,6 @@ class Support(commands.Cog):
                                                                  external_emojis=True)
 
                             await ticket_channel.set_permissions(modo1, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
@@ -257,10 +240,6 @@ class Support(commands.Cog):
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
 
                             await ticket_channel.set_permissions(author, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
@@ -292,10 +271,6 @@ class Support(commands.Cog):
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
 
                             await ticket_channel.set_permissions(author, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
@@ -324,10 +299,6 @@ class Support(commands.Cog):
                                                                  external_emojis=True)
 
                             await ticket_channel.set_permissions(modo1, send_messages=True, read_messages=True,
-                                                                 add_reactions=True, embed_links=True,
-                                                                 attach_files=True, read_message_history=True,
-                                                                 external_emojis=True)
-                            await ticket_channel.set_permissions(modo2, send_messages=True, read_messages=True,
                                                                  add_reactions=True, embed_links=True,
                                                                  attach_files=True, read_message_history=True,
                                                                  external_emojis=True)
