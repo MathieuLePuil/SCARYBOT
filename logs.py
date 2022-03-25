@@ -30,13 +30,13 @@ class Logs(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
 
-        channel = self.bot.get_channel(857701139730137158)
+        logschannel = self.bot.get_channel(857701139730137158)
 
         em = discord.Embed(title="",
                            description=f"💾 **► Message edité** \n \n **Le message de {before.author} a été édité dans <#{before.channel.id}>!** \n \n *{before.content}* \n <:fad:835500807210270770> *{after.content}*",
                            color=0xFFA500)
 
-        await channel.send(embed=em)
+        await logschannel.send(embed=em)
 
     ####################################################################
 
