@@ -82,12 +82,12 @@ class Giveaway(commands.Cog):
 
             em1 = discord.Embed(description="Quel est le lot (simplifié) du Giveaway ? (nom du salon)",
                                 color=0xFFA500)
-            em2 = discord.Embed(description="Quelle est la durée du Giveaway? (s | m | d | h)", color=0xFFA500)
-            em3 = discord.Embed(description="Quel est le lot du Giveaway?",
+            em2 = discord.Embed(description="Quelle est la durée du Giveaway ? (s | m | d | h)", color=0xFFA500)
+            em3 = discord.Embed(description="Quel est le lot du Giveaway ?",
                                 color=0xFFA500)
-            em4 = discord.Embed(description="Quelles sont les conditions du Giveaway?", color=0xFFA500)
+            em4 = discord.Embed(description="Quelles sont les conditions du Giveaway ?", color=0xFFA500)
             em5 = discord.Embed(
-                description="Un rôle est-il nécessaire pour participer au Giveaway? `(Si oui, mentionnez, sinon, écrivez \"non\")`",
+                description="Un rôle est-il nécessaire pour participer au Giveaway ? `(Si oui, mentionnez, sinon, écrivez \"non\")`",
                 color=0xFFA500)
             await interactions.channel.send(embed=em1)
 
@@ -205,7 +205,7 @@ class Giveaway(commands.Cog):
             embed.set_footer(text=f"Fin le: {fin.day} {month} {fin.year} à {fin.hour}h{minute}")
             embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/843936828016689152.png?v=1")
 
-            message = await gchannel.send("🎉 **GIVEAWAY** 🎉", embed=embed, )
+            message = await gchannel.send("🎉 **GIVEAWAY** 🎉", embed=embed)
             await message.add_reaction("🎉")
 
             await when_giveaway(message)
