@@ -10,7 +10,7 @@ class Loterie(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name="loterie",
+    @commands.command(name="loterie",
                        description="Permet aux joueurs de tenter de gagner un lot toutes les 24h.", aliases=['loterie', 'lotos'])
     @cooldown(1, 86400, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
