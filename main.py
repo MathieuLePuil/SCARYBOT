@@ -18,7 +18,7 @@ extensions = ['on_command_error', 'on_member_join', 'latence', 'cblacklist', 'eb
               'rupture', 'resultats', 'recompenses', 'conditionspart', 'grades', 'moderateurs', 'msgsugg',
               'partenariat', 'qdj', 'vendeurs', 'logs', 'absence', 'close', 'help', 'simple', 'suggestion', 'autorole',
               'commande', 'enchere', 'giveaway', 'support', 'role', 'reseau', 'effectif_vendeur', 'effectif_grades',
-              'giveaway_prog', 'rappel', 'resend_message', 'gift']
+              'giveaway_prog', 'rappel', 'resend_message', 'gift', 'loterie']
 
 
 @bot.event
