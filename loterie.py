@@ -10,8 +10,7 @@ class Loterie(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="loterie",
-                       description="Permet aux joueurs de tenter de gagner un lot toutes les 24h.", aliases=['loterie', 'lotos'])
+    @commands.command(aliases=['loterie', 'lotos'])
     @cooldown(1, 86400, commands.BucketType.user)
     @commands.has_permissions(ban_members=True)
     async def loto(self, ctx):
@@ -29,6 +28,14 @@ class Loterie(commands.Cog):
                 color=0xFFA500, timestamp=datetime.datetime.utcnow())
 
         await ctx.send(embed=em)
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            if round(error.retry_after / 3600) > 1:
+                await ctx.send(f"Vous pourrez refaire la commande dans {round(error.retry_after / 3600)}h !")
+            else:
+                await ctx.send(f"Vous pourrez refaire la commande dans {round(error.retry_after / 60)} minutes !")
 
 
 def setup(bot):
