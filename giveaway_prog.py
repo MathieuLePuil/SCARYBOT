@@ -242,7 +242,7 @@ class Giveaway_prog(commands.Cog):
             embed.set_footer(text=f"Fin le: {fin.day} {month} {fin.year} à {fin.hour}h{minute}")
             embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/843936828016689152.png?v=1")
 
-            await interactions.channel.send(f"Le giveaway de {lot.content} sera lancé dans {start.content} !")
+            await interactions.channel.send(f"Le giveaway de {lot.content} sera lancé dans {start.content} !", delete_after=5)
 
             await asyncio.sleep(start_time)
 

@@ -28,6 +28,7 @@ class Loterie(commands.Cog):
                 color=0xFFA500, timestamp=datetime.datetime.utcnow())
 
         await ctx.send(embed=em)
+        await ctx.message.delete()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
