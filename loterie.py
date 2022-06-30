@@ -41,5 +41,3 @@ class Loterie(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Loterie(bot))
-
-#test
