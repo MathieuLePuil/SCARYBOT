@@ -39,12 +39,12 @@ class Gblacklist(commands.Cog):
         log_channel = guild.get_channel(853703546028818443)
 
         embed = discord.Embed(
-            description=f"**{blacklist_user}** a été blacklist des **enchères**! \n \n Tu pourras de nouveau participer aux giveaways dans {duree}.",
+            description=f"**{blacklist_user}** a été blacklist des **giveaways**! \n \n Tu pourras de nouveau participer aux giveaways dans {duree}.",
             color=0xFFA500)
         embed.set_thumbnail(url=blacklist_user.avatar_url)
 
         embed2 = discord.Embed(
-            description=f"**{blacklist_user}** a été blacklist des **enchères**! \n \n Cette sanction est permanente.",
+            description=f"**{blacklist_user}** a été blacklist des **giveaways**! \n \n Cette sanction est permanente.",
             color=0xFFA500)
         embed2.set_thumbnail(url=blacklist_user.avatar_url)
 
@@ -52,15 +52,7 @@ class Gblacklist(commands.Cog):
         await blacklist_user.add_roles(roleBarre1)
         await blacklist_user.add_roles(roleBarre2)
 
-        if duree == "permanent":
-            await ctx.send(embed=embed2)
-            await log_channel.send(embed=embed2)
-
-        if duree == "perma":
-            await ctx.send(embed=embed2)
-            await log_channel.send(embed=embed2)
-
-        if duree == "perm":
+        if duree == "permanent" or "perma" or "perm":
             await ctx.send(embed=embed2)
             await log_channel.send(embed=embed2)
 
