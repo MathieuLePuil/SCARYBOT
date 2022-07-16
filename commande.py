@@ -341,13 +341,13 @@ class Commande(commands.Cog):
                 embed.set_footer(text="⇾ Vous serez notifié lorsque votre commande sera prête.")
                 embed.set_thumbnail(
                     url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
-                message2 = await interaction.channel.send(embed=embed,
+                message2 = await interactions.channel.send(embed=embed,
                                                           components=[[
                                                               Button(style=ButtonStyle.blue, label="Livrer la commande",
                                                                      id="endcommande"),
                                                               Button(style=ButtonStyle.green, label="Whitelist",
                                                                      id="whitelist")]])
-                await interaction.channel.send(f"<@{acheteurid}>", delete_after=1)
+                await interactions.channel.send(f"<@{acheteurid}>", delete_after=1)
                 await message2.pin()
                 messages = await interactions.channel.history(limit=1).flatten()
                 for message in messages:
@@ -444,11 +444,11 @@ class Commande(commands.Cog):
                 embed.set_footer(text="⇾ Merci de trouver un accord avec le vendeur.")
                 embed.set_thumbnail(
                     url="https://cdn.discordapp.com/attachments/705448891570716752/913711303980363816/buy.png")
-                message3 = await interaction.channel.send(embed=embed,
+                message3 = await interactions.channel.send(embed=embed,
                                                           components=[[
                                                               Button(style=ButtonStyle.red, label="Fermer le channel",
                                                                      id="close")]])
-                await interaction.channel.send(f"<@{acheteurid}>", delete_after=1)
+                await interactions.channel.send(f"<@{acheteurid}>", delete_after=1)
                 await message3.pin()
                 messages = await interactions.channel.history(limit=1).flatten()
                 for message in messages:
