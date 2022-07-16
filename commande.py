@@ -41,6 +41,29 @@ async def when_commande(channel):
     return True
 
 
+async def get_nbrcommande_data():
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "r") as f:
+        nbrcommandeinfo = json.load(f)
+
+    return nbrcommandeinfo
+
+
+async def when_nbrcommande(user):
+    nbrcommande = await get_nbrcommande_data()
+
+    if str(user.id) in nbrcommande:
+        return False
+    else:
+
+        nbrcommande[str(user.id)] = {}
+        nbrcommande[str(user.id)]["user_id"] = user.id
+        nbrcommande[str(user.id)]["nbrcommande"] = 0
+
+    with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "w") as f:
+        json.dump(nbrcommande, f, indent=2)
+    return True
+
+
 class Commande(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -54,6 +77,7 @@ class Commande(commands.Cog):
         resprole = guild.get_role(849934378175823874)
         log_channel = self.bot.get_channel(935648359027466380)
         channel = interactions.channel
+        user = interactions.user
         if interactions.custom_id == "commande":
             await interactions.respond(type=7)
 
@@ -113,6 +137,9 @@ class Commande(commands.Cog):
 
             await when_commande(interactions.channel)
             commandeinfo = await get_commande_data()
+
+            await when_nbrcommande(interactions.user)
+            nbrcommande = await get_nbrcommande_data()
 
             reduction = "Aucune"
 
@@ -246,8 +273,16 @@ class Commande(commands.Cog):
             except KeyError:
                 print(f"Il y a une erreur!")
 
+            try:
+                nbrcommande[str(user.id)]["nbrcommande"] = nbrcommande[str(user.id)]["nbrcommande"] + 1
+            except KeyError:
+                print(f"Il y a une erreur!")
+
             with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                 json.dump(commandeinfo, f, indent=2)
+
+            with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "w") as f:
+                json.dump(nbrcommande, f, indent=2)
 
             await interactions.channel.set_permissions(role, send_messages=True, read_messages=True, add_reactions=True,
                                                        embed_links=True, attach_files=True, read_message_history=True,
