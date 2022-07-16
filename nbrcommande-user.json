@@ -1,6 +1,32 @@
 {
   "337971595928666113": {
     "user_id": 337971595928666113,
-    "nbrcommande": 2
+    "nbrcommande": 5,
+    "argenttotal": 2225
+  },
+  "589203274608148520": {
+    "user_id": 589203274608148520,
+    "nbrcommande": 1,
+    "argenttotal": 18000
+  },
+  "649541423254732800": {
+    "user_id": 649541423254732800,
+    "nbrcommande": 2,
+    "argenttotal": 19500
+  },
+  "844229577094070332": {
+    "user_id": 844229577094070332,
+    "nbrcommande": 1,
+    "argenttotal": 20000
+  },
+  "753655308110397443": {
+    "user_id": 753655308110397443,
+    "nbrcommande": 1,
+    "argenttotal": 10000
+  },
+  "693461665500364853": {
+    "user_id": 693461665500364853,
+    "nbrcommande": 1,
+    "argenttotal": 18000
   }
 }

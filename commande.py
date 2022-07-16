@@ -58,6 +58,7 @@ async def when_nbrcommande(user):
         nbrcommande[str(user.id)] = {}
         nbrcommande[str(user.id)]["user_id"] = user.id
         nbrcommande[str(user.id)]["nbrcommande"] = 0
+        nbrcommande[str(user.id)]["argenttotal"] = 0
 
     with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "w") as f:
         json.dump(nbrcommande, f, indent=2)
@@ -159,7 +160,7 @@ class Commande(commands.Cog):
             em1 = discord.Embed(description="Quel item souhaitez-vous commander? (Même nom que dans le catalogue)",
                                 color=0xFFA500)
             em2 = discord.Embed(description="En quelle quantité souhaitez-vous cet item?", color=0xFFA500)
-            em3 = discord.Embed(description="Quel est le prix de votre commande? (sans le $ ni la réduction)",
+            em3 = discord.Embed(description="Quel est le prix de votre commande? **(UNIQUEMENT chiffre, SANS le $ et la réduction)**",
                                 color=0xFFA500)
             em4 = discord.Embed(description="Quel est votre pseudo IG?", color=0xFFA500)
 
@@ -259,6 +260,8 @@ class Commande(commands.Cog):
             for message in messages:
                 await message.delete()
 
+            prix_final = int(prix.content)
+
             try:
                 commandeinfo[str(channel.id)]["Acheteur (name)"] = author.name
                 commandeinfo[str(channel.id)]["Acheteur (discriminator)"] = author.discriminator
@@ -275,6 +278,7 @@ class Commande(commands.Cog):
 
             try:
                 nbrcommande[str(user.id)]["nbrcommande"] = nbrcommande[str(user.id)]["nbrcommande"] + 1
+                nbrcommande[str(user.id)]["argenttotal"] = nbrcommande[str(user.id)]["argenttotal"] + prix_final
             except KeyError:
                 print(f"Il y a une erreur!")
 
@@ -429,6 +433,7 @@ class Commande(commands.Cog):
             reduction = commandeinfo[str(channel.id)]["Reduction"]
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
+
 
             if interactions.user.id == acheteurid:
                 await interactions.channel.delete()
