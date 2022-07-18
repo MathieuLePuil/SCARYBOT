@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import json
 
 
 class On_member_join(commands.Cog):
@@ -8,6 +9,12 @@ class On_member_join(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'r') as f:
+            data = json.load(f)
+
+        member_number = int(data["member-counter"])
+        member_number += 1
+
         thewelChann = member.guild.get_channel(705101200990928967)
         maintwelChann = member.guild.get_channel(833077370151501864)
         stats = member.guild.get_channel(733783525395791892)
@@ -22,10 +29,25 @@ class On_member_join(commands.Cog):
         msg = await roleChannel.send(f"{member.mention}")
         await msg.delete()
 
+        data["member-counter"] = int(member_number)
+
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'w') as f:
+            json.dump(data, f)
+
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'r') as f:
+            data = json.load(f)
+
+        member_number = int(data["member-counter"])
+        member_number -= 1
         stats = self.bot.get_channel(733783525395791892)
         await stats.edit(name=f"⭐ ▬  Membres: {member.guild.member_count}")
+
+        data["member-counter"] = int(member_number)
+
+        with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'w') as f:
+            json.dump(data, f)
 
 
 def setup(bot):

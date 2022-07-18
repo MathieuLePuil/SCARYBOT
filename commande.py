@@ -160,7 +160,7 @@ class Commande(commands.Cog):
             em1 = discord.Embed(description="Quel item souhaitez-vous commander? (Même nom que dans le catalogue)",
                                 color=0xFFA500)
             em2 = discord.Embed(description="En quelle quantité souhaitez-vous cet item?", color=0xFFA500)
-            em3 = discord.Embed(description="Quel est le prix de votre commande? **(UNIQUEMENT chiffre, SANS le $ et la réduction)**",
+            em3 = discord.Embed(description="Quel est le prix de votre commande? **(UNIQUEMENT chiffre, SANS le $, SANS espace et la réduction)**",
                                 color=0xFFA500)
             em4 = discord.Embed(description="Quel est votre pseudo IG?", color=0xFFA500)
 
@@ -260,7 +260,9 @@ class Commande(commands.Cog):
             for message in messages:
                 await message.delete()
 
-            prix_final = int(prix.content)
+            prix_avant = prix.content
+            prix_final = prix_avant.replace('k', '000').replace('m', '000000').replace(' ', '').replace('$', '').replace('.', '')
+            prix_final = int(prix_final)
 
             try:
                 commandeinfo[str(channel.id)]["Acheteur (name)"] = author.name
@@ -640,3 +642,4 @@ class Commande(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Commande(bot))
+

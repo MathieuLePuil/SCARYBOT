@@ -79,7 +79,7 @@ class Giveaway_prog(commands.Cog):
         if interactions.custom_id == "giveaway_prog":
             await interactions.respond(type=7)
 
-            em1 = discord.Embed(description="Quel est le lot (simplifié) du Giveaway ? (nom du salon)",
+            em1 = discord.Embed(description="Dans quel channel souhaitez-vous lancer le giveaway ?",
                                 color=0xFFA500)
             em2 = discord.Embed(description="Quelle est la durée du Giveaway ? (s | m | d | h)", color=0xFFA500)
             em3 = discord.Embed(description="Quel est le lot du Giveaway ?",
@@ -102,6 +102,15 @@ class Giveaway_prog(commands.Cog):
                 await interactions.channel.purge(limit=1, check=lambda msg: not msg.pinned)
                 await interactions.channel.send("Vous avez été trop long, veuillez recommencer.", delete_after=10)
                 return
+
+            digits = "0123456789"
+            channelg_id = ""
+
+            for i in channelg.content:
+                if i in digits:
+                    channelg_id += i
+
+            channelg_id = int(channelg_id)
 
             await interactions.channel.send(embed=em2)
 
@@ -230,11 +239,8 @@ class Giveaway_prog(commands.Cog):
             else:
                 minute = fin.minute
 
-            catego = self.bot.get_channel(821466113132724244)
-
-            gchannel = await guild.create_text_channel(f"🎉〡giveaway-{channelg}", category=catego)
-            channelg_id = gchannel.id
-            guild.get_role(rolecond_id)
+            gchannel = self.bot.get_channel(channelg_id)
+            rolecond = guild.get_role(rolecond_id)
 
             embed = discord.Embed(title=f"**{lot.content}**",
                                   description=f"> *Host par:* **{interactions.user.mention}** \n > *Condition:* {conditions} \n \n Coche la réaction 🎉 pour participer!",
