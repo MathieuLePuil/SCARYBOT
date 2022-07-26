@@ -39,6 +39,7 @@ class Profil_update(commands.Cog):
 
 
     @cog_ext.cog_slash(name="profil_update", description="Mettre à jour le profil des commandes de l'utilisateur.")
+    @commands.has_permissions(kick_members = True)
     async def profil_update(self, ctx, user: discord.User, objet, quantite):
         await when_nbrcommande(user)
         nbrcommande = await get_nbrcommande_data()
@@ -48,16 +49,16 @@ class Profil_update(commands.Cog):
                 quantite_final = int(quantite1)
                 try:
                     nbrcommande[str(user.id)]["nbrcommande"] = nbrcommande[str(user.id)]["nbrcommande"] - quantite_final
-                    em = discord.Embed(description=f"`{quantite}` commande(s) a/ont été retirée(s) à {user.mention} !",
+                    em = discord.Embed(description=f"`{quantite_final}` commande(s) a/ont été retirée(s) à {user.mention} !",
                                        color=0xFFA500)
                 except KeyError:
                     print(f"Il y a une erreur!")
             elif quantite.startswith("+"):
-                quantite = quantite.replace("+", "")
-                quantite = int(quantite)
+                quantite1 = quantite.replace("+", "")
+                quantite_final = int(quantite1)
                 try:
-                    nbrcommande[str(user.id)]["nbrcommande"] = nbrcommande[str(user.id)]["nbrcommande"] + quantite
-                    em = discord.Embed(description=f"`{quantite}` commande(s) a/ont été ajoutée(s) à {user.mention} !",
+                    nbrcommande[str(user.id)]["nbrcommande"] = nbrcommande[str(user.id)]["nbrcommande"] + quantite_final
+                    em = discord.Embed(description=f"`{quantite_final}` commande(s) a/ont été ajoutée(s) à {user.mention} !",
                                        color=0xFFA500)
                 except KeyError:
                     print(f"Il y a une erreur!")
@@ -76,16 +77,16 @@ class Profil_update(commands.Cog):
                 quantite_final = int(quantite1)
                 try:
                     nbrcommande[str(user.id)]["argenttotal"] = nbrcommande[str(user.id)]["argenttotal"] - quantite_final
-                    em = discord.Embed(description=f"`{quantite}$` ont été retirés à {user.mention} !",
+                    em = discord.Embed(description=f"`{quantite_final}$` ont été retirés à {user.mention} !",
                                        color=0xFFA500)
                 except KeyError:
                     print(f"Il y a une erreur!")
             elif quantite.startswith("+"):
-                quantite = quantite.replace("+", "")
-                quantite = int(quantite)
+                quantite1 = quantite.replace("+", "")
+                quantite_final = int(quantite1)
                 try:
-                    nbrcommande[str(user.id)]["argenttotal"] = nbrcommande[str(user.id)]["argenttotal"] + quantite
-                    em = discord.Embed(description=f"`{quantite}$` ont été ajoutés à {user.mention} !",
+                    nbrcommande[str(user.id)]["argenttotal"] = nbrcommande[str(user.id)]["argenttotal"] + quantite_final
+                    em = discord.Embed(description=f"`{quantite_final}$` ont été ajoutés à {user.mention} !",
                                        color=0xFFA500)
                 except KeyError:
                     print(f"Il y a une erreur!")
