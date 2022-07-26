@@ -288,6 +288,14 @@ class Giveaway_prog(commands.Cog):
 
             winner = random.choice(users)
 
+            emfin = discord.Embed(title=f"**{lot.content}**",
+                                  description=f"> *Host par:* **{interactions.user.mention}** \n > *Condition:* {conditions} \n \n Le gagnant est {winner.mention} !",
+                                  color=0xFD3F92)
+            emfin.set_footer(text=f"🎉 Giveaway terminé")
+            emfin.set_thumbnail(url="https://cdn.discordapp.com/emojis/843936828016689152.png?v=1")
+
+            await message.edit(embed=emfin)
+
             await gchannel.send(
                 f"🎉 **Bien joué** à toi {winner.mention}, tu remportes **{lot.content}**! Je t'invite à te rendre dans le <#765633542658195456> pour récuperer ton lot. 🎉")
 
