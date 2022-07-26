@@ -311,10 +311,15 @@ class Commande(commands.Cog):
             await when_commande(channel=interactions.channel)
             commandeinfo = await get_commande_data()
 
+            await when_nbrcommande(interactions.user)
+            nbrcommande = await get_nbrcommande_data()
+
             vendeur = interactions.guild.get_role(705093311248990312)
+            acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
+            prix_depart = commandeinfo[str(channel.id)]["Prix"]
 
             if vendeur in author.roles:
-                em = discord.Embed(description="Quel est le nouveau prix de la commande? (sans le $)", color=0xFFA500)
+                em = discord.Embed(description="Quel est le nouveau prix de la commande? **(UNIQUEMENT chiffre, SANS le $, SANS espace et la réduction)**", color=0xFFA500)
 
                 await interactions.channel.send(embed=em)
 
@@ -326,13 +331,33 @@ class Commande(commands.Cog):
                     await interactions.channel.send("Veuillez recommencer le changement de prix.")
                     return
 
+                prix_final = newprix.content
+
+                if prix_final == "":
+                    prix_final = 0
+
+                prix_final = int(prix_final)
+                prix_depart = int(prix_depart)
+
                 try:
-                    commandeinfo[str(channel.id)]["Prix"] = newprix.content
+                    commandeinfo[str(channel.id)]["Prix"] = prix_final
+                except KeyError:
+                    print(f"Il y a une erreur!")
+
+                try:
+                    if prix_depart > prix_final:
+                        nbrcommande[str(acheteurid)]["argenttotal"] = nbrcommande[str(acheteurid)]["argenttotal"] - (prix_depart - prix_final)
+                    elif prix_depart < prix_final:
+                        nbrcommande[str(acheteurid)]["argenttotal"] = nbrcommande[str(acheteurid)]["argenttotal"] + (
+                                    prix_final - prix_depart)
                 except KeyError:
                     print(f"Il y a une erreur!")
 
                 with open("/home/mmi21b12/DISCORD/SCARYBOT/commande.json", "w") as f:
                     json.dump(commandeinfo, f, indent=2)
+
+                with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "w") as f:
+                    json.dump(nbrcommande, f, indent=2)
 
                 await interactions.channel.purge(limit=2, check=lambda msgs: not msgs.pinned)
 
