@@ -456,6 +456,10 @@ class Commande(commands.Cog):
 
             await when_commande(channel=interactions.channel)
             commandeinfo = await get_commande_data()
+
+            await when_nbrcommande(interactions.user)
+            nbrcommande = await get_nbrcommande_data()
+
             acheteurid = commandeinfo[str(channel.id)]["Acheteur (ID)"]
             item = commandeinfo[str(channel.id)]["Item"]
             quantite = commandeinfo[str(channel.id)]["Quantite"]
@@ -465,8 +469,18 @@ class Commande(commands.Cog):
             ticket_number = commandeinfo[str(channel.id)]["Numero"]
             logsmessage = commandeinfo[str(channel.id)]["Logs"]
 
+            prix = int(prix)
 
             if interactions.user.id == acheteurid:
+                try:
+                    nbrcommande[str(acheteurid)]["argenttotal"] = nbrcommande[str(acheteurid)]["argenttotal"] - prix
+                    nbrcommande[str(acheteurid)]["nbrcommande"] = nbrcommande[str(acheteurid)]["nbrcommande"] - 1
+                except KeyError:
+                    print(f"Il y a une erreur!")
+
+                with open("/home/mmi21b12/DISCORD/SCARYBOT/nbrcommande-user.json", "w") as f:
+                    json.dump(nbrcommande, f, indent=2)
+
                 await interactions.channel.delete()
                 logsmsg = await log_channel.fetch_message(logsmessage)
 
