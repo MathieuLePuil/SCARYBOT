@@ -108,6 +108,9 @@ class Help(commands.Cog):
             em3.add_field(name="`!gift <lot>`",
                           value="<:fad:835500807210270770> Offre un cadeau au premier joueur qui clique sur le bouton.",
                           inline=False)
+            em3.add_field(name="`/profil_update <user> <commande/argent> <-/+/=quantite>`",
+                          value="<:fad:835500807210270770> Modifie le nombre de commande ou la quantité total dépensé par un utilisateur.",
+                          inline=False)
             em3.set_thumbnail(url="https://cdn.discordapp.com/emojis/762020637283713055.png?v=1")
             em3.set_image(url="https://cdn.discordapp.com/emojis/813748552915222529.png?v=1")
             em3.set_footer(text="ScaryBot - Help",
@@ -118,7 +121,9 @@ class Help(commands.Cog):
             em6 = discord.Embed(title="Help Responsable",
                                 description="Voici toutes les commandes disponibles pour la catégorie `Responsable`.",
                                 color=0xFFA500)
-            em6.add_field(name="`/resultats`", value="<:fad:835500807210270770> Démarre une nouvelle enchère.",
+            em6.add_field(name="`!enchere`", value="<:fad:835500807210270770> Démarre une nouvelle enchère.",
+                          inline=False)
+            em6.add_field(name="`/resultats`", value="<:fad:835500807210270770> Annonce le gagnant d'une enchère.",
                           inline=False)
             em6.add_field(name="`/chut`",
                           value="<:fad:835500807210270770> Rappel à l'ordre ceux qui discutent dans le channel enchère.",

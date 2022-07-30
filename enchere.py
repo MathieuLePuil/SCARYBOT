@@ -49,14 +49,14 @@ class Enchere(commands.Cog):
         if interactions.custom_id == "enchere":
             await interactions.respond(type=7)
 
-            em1 = discord.Embed(description="Dans quel channel souhaitez-vous lancer l'enchère?",
+            em1 = discord.Embed(description="Dans quel channel souhaitez-vous lancer l'enchère ?",
                                 color=0xFFA500)
-            em2 = discord.Embed(description="Quel est l'objet et la quantité de l'enchère?", color=0xFFA500)
-            em3 = discord.Embed(description="Quel est le prix de départ de l'enchère? (sans le $)",
+            em2 = discord.Embed(description="Quel est l'objet et la quantité de l'enchère ?", color=0xFFA500)
+            em3 = discord.Embed(description="Quel est le prix de départ de l'enchère ? (sans le $)",
                                 color=0xFFA500)
-            em4 = discord.Embed(description="Quelle est la durée de l'enchère? `(s|m|h|d)`", color=0xFFA500)
+            em4 = discord.Embed(description="Quelle est la durée de l'enchère ? `(s|m|h|d)`", color=0xFFA500)
             em5 = discord.Embed(
-                description="Quel est le pas de l'enchère? `(1 pour 1.000$ en 1.000$, 2 pour 2.000$ en 2.000$...)`",
+                description="Quel est le pas de l'enchère ? `(1 pour 1.000$ en 1.000$, 2 pour 2.000$ en 2.000$...)`",
                 color=0xFFA500)
             em6 = discord.Embed(description="Quel est l'id du vendeur'?", color=0xFFA500)
 
