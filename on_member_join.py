@@ -12,8 +12,7 @@ class On_member_join(commands.Cog):
         with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'r') as f:
             data = json.load(f)
 
-        member_number = int(data["member-counter"])
-        member_number += 1
+        data["member-counter"] = member.guild.member_count
 
         thewelChann = member.guild.get_channel(705101200990928967)
         maintwelChann = member.guild.get_channel(833077370151501864)
@@ -29,8 +28,6 @@ class On_member_join(commands.Cog):
         msg = await roleChannel.send(f"{member.mention}")
         await msg.delete()
 
-        data["member-counter"] = int(member_number)
-
         with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'w') as f:
             json.dump(data, f)
 
@@ -39,12 +36,9 @@ class On_member_join(commands.Cog):
         with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'r') as f:
             data = json.load(f)
 
-        member_number = int(data["member-counter"])
-        member_number -= 1
+        data["member-counter"] = member.guild.member_count
         stats = self.bot.get_channel(733783525395791892)
         await stats.edit(name=f"⭐ ▬  Membres: {member.guild.member_count}")
-
-        data["member-counter"] = int(member_number)
 
         with open("/home/mmi21b12/DISCORD/SCARYBOT/membre-serveur.json", 'w') as f:
             json.dump(data, f)
