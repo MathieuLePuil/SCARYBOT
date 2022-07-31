@@ -292,14 +292,10 @@ class Giveaway(commands.Cog):
         except:
             await ctx.send("L'ID est incorrect.")
 
-        print(locals())
-
         users = await new_msg.reactions[0].users().flatten()
         users.pop(users.index(self.bot.user))
 
         winner = random.choice(users)
-
-        print(winner)
 
         await channel.send(
             f"🎉 **Bien joué** à notre nouveau gagnant {winner.mention}! Je t'invite à te rendre dans le <#765633542658195456> pour récuperer ton lot. 🎉")
