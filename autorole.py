@@ -82,6 +82,11 @@ class Autorole(commands.Cog):
                                            value="pub",
                                            emoji="📻"
                                        ),
+                                       SelectOption(
+                                           label="Parieur",
+                                           value="parieur",
+                                           emoji="💸"
+                                       )
                                    ])]
             )
 
@@ -173,6 +178,15 @@ class Autorole(commands.Cog):
                                 await author.add_roles(role)
                                 await author.send(
                                     "Vous possédez maintenant le rôle **Publicité** sur le ***ScaryShop*** !")
+
+                        elif value == "parieur":
+                            role = interactions.guild.get_role(1014217511551639562)
+                            if role in author.roles:
+                                await author.send("Vous possédez déjà le rôle **Parieur** sur le ***ScaryShop*** !")
+                            else:
+                                await author.add_roles(role)
+                                await author.send(
+                                    "Vous possédez maintenant le rôle **Parieur** sur le ***ScaryShop*** !")
 
                     await author.add_roles(rolebarre)
                     await author.add_roles(sepa)

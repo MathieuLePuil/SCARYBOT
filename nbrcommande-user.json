@@ -11,8 +11,8 @@
   },
   "649541423254732800": {
     "user_id": 649541423254732800,
-    "nbrcommande": 11,
-    "argenttotal": 74300
+    "nbrcommande": 10,
+    "argenttotal": 69800
   },
   "844229577094070332": {
     "user_id": 844229577094070332,
@@ -81,8 +81,8 @@
   },
   "582251523384279069": {
     "user_id": 582251523384279069,
-    "nbrcommande": 2,
-    "argenttotal": 2600
+    "nbrcommande": 1,
+    "argenttotal": 0
   },
   "852605163364548628": {
     "user_id": 852605163364548628,
@@ -117,12 +117,12 @@
   "714503071136219208": {
     "user_id": 714503071136219208,
     "nbrcommande": 1,
-    "argenttotal": 800000
+    "argenttotal": 0
   },
   "646737068965363743": {
     "user_id": 646737068965363743,
-    "nbrcommande": 1,
-    "argenttotal": 750
+    "nbrcommande": 0,
+    "argenttotal": 0
   },
   "726931992339415044": {
     "user_id": 726931992339415044,
@@ -146,7 +146,7 @@
   },
   "850254593107427390": {
     "user_id": 850254593107427390,
-    "nbrcommande": 3,
+    "nbrcommande": 2,
     "argenttotal": 3150
   },
   "744527441430839378": {
@@ -208,5 +208,45 @@
     "user_id": 988095272062169168,
     "nbrcommande": 1,
     "argenttotal": 34000
+  },
+  "678266133337604098": {
+    "user_id": 678266133337604098,
+    "nbrcommande": 1,
+    "argenttotal": 3000
+  },
+  "393017338494058496": {
+    "user_id": 393017338494058496,
+    "nbrcommande": -1,
+    "argenttotal": 0
+  },
+  "712983027634143244": {
+    "user_id": 712983027634143244,
+    "nbrcommande": 1,
+    "argenttotal": 90000
+  },
+  "484397241663225894": {
+    "user_id": 484397241663225894,
+    "nbrcommande": 1,
+    "argenttotal": 25000
+  },
+  "928295507061784576": {
+    "user_id": 928295507061784576,
+    "nbrcommande": 1,
+    "argenttotal": 22000
+  },
+  "588900738592145418": {
+    "user_id": 588900738592145418,
+    "nbrcommande": 0,
+    "argenttotal": 0
+  },
+  "842389984350699570": {
+    "user_id": 842389984350699570,
+    "nbrcommande": 0,
+    "argenttotal": 0
+  },
+  "662569493784035333": {
+    "user_id": 662569493784035333,
+    "nbrcommande": 1,
+    "argenttotal": 7813
   }
 }
