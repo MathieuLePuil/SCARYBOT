@@ -250,6 +250,11 @@ class Autorole(commands.Cog):
                                            value="pubr",
                                            emoji="📻"
                                        ),
+                                       SelectOption(
+                                           label="Parieur",
+                                           value="parieurr",
+                                           emoji="💸"
+                                       )
                                    ])]
             )
 
@@ -338,6 +343,15 @@ class Autorole(commands.Cog):
                                     "Vous ne possédez plus le rôle **Publicité** sur le ***ScaryShop*** !")
                             else:
                                 await author.send("Vous ne possédez pas le rôle **Publicité** sur le ***ScaryShop*** !")
+
+                        elif value == "parieurr":
+                            pubrole = interactions.guild.get_role(1014217511551639562)
+                            if pubrole in author.roles:
+                                await author.remove_roles(pubrole)
+                                await author.send(
+                                    "Vous ne possédez plus le rôle **Parieur** sur le ***ScaryShop*** !")
+                            else:
+                                await author.send("Vous ne possédez pas le rôle **Parieur** sur le ***ScaryShop*** !")
 
                         return
 
